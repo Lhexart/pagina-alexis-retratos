@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Retratos a lápiz hechos a mano por Alexis. Arte hiperrealista por encargo en grafito y carboncillo. Encargá tu retrato personalizado.">
+    <title>Alexis | Retratos a Lápiz Hechos a Mano por Encargo</title>
+    
+    <!-- Tipografías de Alta Gama: Cormorant Garamond (Titulares) y Plus Jakarta Sans (Texto) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Librería Swiper para Carruseles -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.css" />
+    
+    <!-- Hoja de Estilos Principal -->
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <!-- NAVEGACIÓN PRINCIPAL -->
+    <header class="site-header">
+        <div class="header-container container">
+            <a href="#inicio" class="brand-logo" aria-label="Inicio - Alexis Retratos a Lápiz">
+                <span class="brand-name">ALEXIS</span>
+                <span class="brand-sub">Retratos a Lápiz</span>
+            </a>
+
+            <input type="checkbox" id="menu-toggle" class="menu-toggle-input" />
+            <label for="menu-toggle" class="menu-toggle-label" aria-label="Abrir menú de navegación">
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </label>
+
+            <nav class="main-nav" aria-label="Navegación principal">
+                <ul class="nav-links">
+                    <li><a href="#inicio">Inicio</a></li>
+                    <li><a href="#obras">Obras</a></li>
+                    <li><a href="#antes-despues">Antes y Después</a></li>
+                    <li><a href="#proceso-materiales">Detrás de cada obra</a></li>
+                    <li><a href="#encargo">Encargos</a></li>
+                    <li><a href="#sobre-mi">Sobre mí</a></li>
+                </ul>
+                <div class="header-actions">
+                    <a href="https://wa.me/?text=Hola%20Alexis,%20vi%20tu%20trabajo%20en%20la%20web%20y%20me%20gustar%C3%ADa%20consultar%20por%20un%20retrato%20a%20l%C3%A1piz." target="_blank" rel="noopener" class="btn-header-wa">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                            <path d="M12.012 2C6.486 2 2 6.479 2 12.006c0 1.9.53 3.666 1.452 5.176l-1.08 3.944 4.04-1.06a9.96 9.96 0 005.6 1.692h.005c5.525 0 10.011-4.478 10.011-10.005C22.028 6.479 17.537 2 12.012 2zm5.836 14.2c-.244.686-1.42 1.309-1.96 1.365-.494.052-1.139.076-3.669-.971-3.238-1.34-5.322-4.63-5.485-4.848-.16-.217-1.31-1.745-1.31-3.328 0-1.583.829-2.361 1.124-2.684.294-.323.644-.404.86-.404.215 0 .43.004.618.012.2.008.468-.077.732.557.27.649.92 2.247 1.002 2.41.08.163.134.354.026.57-.107.215-.16.35-.316.536-.156.185-.327.414-.467.556-.156.157-.319.327-.137.64.182.312.809 1.335 1.737 2.162 1.194 1.064 2.2 1.394 2.512 1.549.313.155.496.134.68-.078.186-.213.797-.93 1.01-1.25.216-.322.433-.27.728-.161.294.108 1.867.88 2.188 1.04.321.161.536.24.616.376.08.136.08.791-.164 1.477z"/>
+                        </svg>
+                        <span>Consultar</span>
+                    </a>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <!-- SECCIÓN 1: HERO COMPOSICIÓN EDITORIAL (#inicio) -->
+        <section id="inicio" class="hero-section">
+            <div class="hero-container container">
+                <div class="hero-content">
+                    <span class="hero-tag">Dibujos hechos 100% a mano</span>
+                    <h1 class="hero-title">Retratos a lápiz que conservan miradas y momentos únicos</h1>
+                    <p class="hero-description">
+                        Transformo tus fotografías más valiosas en obras de arte originales en grafito y carboncillo. Un regalo o recuerdo eterno hecho con paciencia, técnica e hiperrealismo.
+                    </p>
+                    <div class="hero-actions">
+                        <a href="https://wa.me/?text=Hola%20Alexis,%20estoy%20viendo%20tu%20web%20y%20quisiera%20consultar%20por%20un%20retrato." target="_blank" rel="noopener" class="btn-primary">
+                            <span>Encargar un retrato por WhatsApp</span>
+                        </a>
+                        <a href="#obras" class="btn-secondary">
+                            <span>Ver obras realizadas</span>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="hero-visual">
+                    <div class="swiper mySwiper-1">
+                        <div class="swiper-wrapper">
+                            <div class="swiper-slide">
+                                <div class="hero-card filter-trigger" data-title="Retrato Hiperrealista de Rostro" data-tech="Grafito & Carboncillo sobre papel Canson 300g">
+                                    <img src="assets/images/personas/(3).jpg" alt="Retrato a lápiz hiperrealista de rostro con estudio de sombras" loading="eager">
+                                    <div class="card-badge">Grafito & Carboncillo</div>
+                                </div>
+                            </div>
+                            <div class="swiper-slide">
+                                <div class="hero-card filter-trigger" data-title="Retrato de Lionel Messi" data-tech="Grafito graduado (2H a 8B)">
+                                    <img src="assets/images/personas/(21).jpg" alt="Retrato a lápiz hiperrealista de Lionel Messi" loading="lazy">
+                                    <div class="card-badge">Detalle de Expresión</div>
+                                </div>
+                            </div>
+                            <div class="swiper-slide">
+                                <div class="hero-card filter-trigger" data-title="Retrato de Mascota" data-tech="Grafito fino y pelaje detallado al máximo">
+                                    <img src="assets/images/mascotas/(19).png" alt="Retrato a lápiz detallado de mascota" loading="lazy">
+                                    <div class="card-badge">Retrato de Mascota</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="swiper-button-next" aria-label="Siguiente obra en exhibición"></div>
+                        <div class="swiper-button-prev" aria-label="Anterior obra en exhibición"></div>
+                        <div class="swiper-pagination"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Indicador Discreto de Scroll -->
+            <a href="#obras" class="scroll-indicator" aria-label="Deslizar hacia las obras">
+                <span>Explorar</span>
+                <div class="scroll-line"></div>
+            </a>
+        </section>
+
+        <!-- SECCIÓN 2: GALERÍA DE OBRAS DINÁMICA (#obras) -->
+        <section id="obras" class="gallery-section">
+            <div class="container">
+                <div class="section-header">
+                    <span class="section-subtitle">Exposición Privada</span>
+                    <h2 class="section-title">Galería de Trabajos Realizados</h2>
+                    <p class="section-intro">
+                        Cada obra es dibujada a mano alzada. Tocá cualquier obra para observarla en detalle en la sala de exhibición a pantalla completa.
+                    </p>
+                </div>
+
+                <!-- Botones de Filtros Dinámicos -->
+                <div id="category-filters" class="category-filters" role="tablist" aria-label="Categorías de obras">
+                    <!-- Generado dinámicamente desde works-data.js -->
+                </div>
+
+                <!-- Galería Dinámica Renderizada -->
+                <div id="dynamic-gallery" class="dynamic-gallery-grid">
+                    <!-- Renderizado dinámico desde script.js & works-data.js -->
+                </div>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 3: COMPARACIÓN ANTES Y DESPUÉS (FOTO VS DIBUJO) -->
+        <section id="antes-despues" class="comparison-section">
+            <div class="container">
+                <div class="section-header">
+                    <span class="section-subtitle">Fidelidad y Arte</span>
+                    <h2 class="section-title">De la Foto al Retrato Dibujado</h2>
+                    <p class="section-intro">
+                        Mirá cómo una fotografía cobra vida y sensibilidad a través del grafito a mano alzada.
+                    </p>
+                </div>
+
+                <div class="comparison-showcase">
+                    <div class="comparison-card">
+                        <div class="comparison-side">
+                            <span class="tag-label">Fotografía Original</span>
+                            <img src="assets/images/mascotas/(19).png" alt="Fotografía original de referencia" loading="lazy">
+                        </div>
+                        <div class="comparison-divider">
+                            <span class="vs-badge">VS</span>
+                        </div>
+                        <div class="comparison-side">
+                            <span class="tag-label">Retrato Finalizado a Lápiz</span>
+                            <img src="assets/images/personas/(3).jpg" alt="Resultado final dibujado a mano" loading="lazy">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 4: DETRÁS DE CADA OBRA (PROCESO REAL Y MATERIALES) -->
+        <section id="proceso-materiales" class="materials-section">
+            <div class="container">
+                <div class="materials-grid">
+                    <div class="materials-text">
+                        <span class="section-subtitle">Oficio y Dedicación</span>
+                        <h2 class="section-title">Detrás de cada obra</h2>
+                        <p class="paragraph">
+                            No utilizo filtros digitales ni impresiones asistidas. Cada línea es trazada a mano alzada utilizando lápices de grafito de diferente dureza (desde 2H hasta 8B) y carboncillos seleccionados sobre papel libre de ácido de 300g.
+                        </p>
+                        <div class="process-photo-highlights">
+                            <div class="process-feature">
+                                <div class="process-thumb">
+                                    <img src="assets/images/proceso/portada.jpg" alt="Detalle del papel y el trazo inicial" loading="lazy">
+                                </div>
+                                <div class="process-desc">
+                                    <strong>Papel de Algodón 300g</strong>
+                                    <p>Textura física que conserva el sombreado intacto sin amarillear.</p>
+                                </div>
+                            </div>
+
+                            <div class="process-feature">
+                                <div class="process-thumb">
+                                    <img src="assets/images/personas/(21).jpg" alt="Proceso de dibujo a lápiz de Messi" loading="lazy">
+                                </div>
+                                <div class="process-desc">
+                                    <strong>Capas de Grafito & Carboncillo</strong>
+                                    <p>Decenas de horas de trabajo para lograr profundidades de negro puro.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="materials-visual">
+                        <div class="macro-image-wrapper">
+                            <img src="assets/images/proceso/portada.jpg" alt="Detalle macro del trazo a lápiz en proceso" loading="lazy">
+                            <div class="macro-caption">
+                                <span>Fotografía Macro: Textura del Grafito sobre Papel</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 5: CÓMO ENCARGAR (PASOS CLAROS Y SENCILLOS) -->
+        <section id="encargo" class="steps-section">
+            <div class="container">
+                <div class="section-header">
+                    <span class="section-subtitle">Transparente y Directo</span>
+                    <h2 class="section-title">¿Cómo encargar tu retrato?</h2>
+                    <p class="section-intro">El proceso es sencillo y sin intermediarios. Te acompaño personalmente en cada paso.</p>
+                </div>
+
+                <div class="steps-grid">
+                    <div class="step-card">
+                        <div class="step-badge">Paso 1</div>
+                        <h3>Me enviás tu foto por WhatsApp</h3>
+                        <p>Analizamos juntos la resolución, la iluminación y el encuadre para asegurar el mejor resultado en el dibujo.</p>
+                    </div>
+
+                    <div class="step-card">
+                        <div class="step-badge">Paso 2</div>
+                        <h3>Elegimos el formato ideal</h3>
+                        <p>Te asesoro en las dimensiones (A4, A3 o A2) según sea un dibujo individual, de pareja o de tu mascota.</p>
+                    </div>
+
+                    <div class="step-card">
+                        <div class="step-badge">Paso 3</div>
+                        <h3>Creación y Envío Seguro</h3>
+                        <p>Trabajo la obra a mano alzada, te comparto fotos del avance si lo querés y la envío protegida a tu domicilio.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 6: SOBRE MÍ (REUBICADO TRAS EL PROCESO DE ENCARGO) -->
+        <section id="sobre-mi" class="about-section">
+            <div class="container">
+                <div class="about-card">
+                    <div class="about-image">
+                        <img src="assets/images/hero/diego.jpg" alt="Alexis - Artista dibujante especializado en retratos a lápiz" loading="lazy">
+                    </div>
+                    <div class="about-content">
+                        <span class="section-subtitle">El Artista</span>
+                        <h2 class="section-title">Hola, soy Alexis</h2>
+                        <p class="paragraph">
+                            Desde hace años me dedico a capturar miradas, gestos y recuerdos únicos a través del dibujo a lápiz. Para mí, hacer un retrato no es copiar una imagen: es comprender la luz, la expresión y la emoción de quienes están en ella.
+                        </p>
+                        <p class="paragraph">
+                            Disfruto cada hora de trabajo en el taller frente al papel, cuidando cada detalle para que cuando recibas la obra terminada sientas la misma conexión y afecto que dio origen a esa foto especial.
+                        </p>
+                        <div class="artist-signature">
+                            <span>Alexis — Retratista a Lápiz</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 7: HABLEMOS DE TU RETRATO (CIERRE Y UNICO LLAMADO A LA ACCIÓN) -->
+        <section id="contacto" class="cta-section">
+            <div class="container">
+                <div class="cta-box">
+                    <span class="cta-subtitle">Atención Personalizada</span>
+                    <h2 class="cta-title">Hablemos de tu retrato</h2>
+                    <p class="cta-description">
+                        ¿Tenés una fotografía especial en mente? Escribime directamente por WhatsApp para consultar dudas, tiempos de realización o solicitar presupuesto sin compromiso.
+                    </p>
+                    <div class="cta-action">
+                        <a href="https://wa.me/?text=Hola%20Alexis,%20estoy%20viendo%20tu%20web%20y%20me%20gustar%C3%ADa%20consultar%20presupuesto%20para%20un%20retrato." target="_blank" rel="noopener" class="btn-whatsapp-large">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                                <path d="M12.012 2C6.486 2 2 6.479 2 12.006c0 1.9.53 3.666 1.452 5.176l-1.08 3.944 4.04-1.06a9.96 9.96 0 005.6 1.692h.005c5.525 0 10.011-4.478 10.011-10.005C22.028 6.479 17.537 2 12.012 2zm5.836 14.2c-.244.686-1.42 1.309-1.96 1.365-.494.052-1.139.076-3.669-.971-3.238-1.34-5.322-4.63-5.485-4.848-.16-.217-1.31-1.745-1.31-3.328 0-1.583.829-2.361 1.124-2.684.294-.323.644-.404.86-.404.215 0 .43.004.618.012.2.008.468-.077.732.557.27.649.92 2.247 1.002 2.41.08.163.134.354.026.57-.107.215-.16.35-.316.536-.156.185-.327.414-.467.556-.156.157-.319.327-.137.64.182.312.809 1.335 1.737 2.162 1.194 1.064 2.2 1.394 2.512 1.549.313.155.496.134.68-.078.186-.213.797-.93 1.01-1.25.216-.322.433-.27.728-.161.294.108 1.867.88 2.188 1.04.321.161.536.24.616.376.08.136.08.791-.164 1.477z"/>
+                            </svg>
+                            <span>Escribir a Alexis por WhatsApp</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- PIE DE PÁGINA (MINIMALISTA) -->
+    <footer class="site-footer">
+        <div class="footer-container container">
+            <div class="footer-brand">
+                <span class="brand-name">ALEXIS</span>
+                <p>Retratos a lápiz dibujados a mano alzada. Envíos protegidos.</p>
+            </div>
+            <div class="footer-links">
+                <a href="#inicio">Inicio</a>
+                <a href="#obras">Obras</a>
+                <a href="#encargo">Encargos</a>
+                <a href="#sobre-mi">Sobre mí</a>
+            </div>
+            <div class="footer-copy">
+                <p>&copy; Alexis - Retratos a Lápiz. Todos los derechos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- VISOR LIGHTBOX DE PANTALLA COMPLETA PARA LA GALERÍA -->
+    <div id="art-modal" class="art-modal" aria-hidden="true" role="dialog" aria-modal="true" aria-label="Visor de Obra en Alta Definición">
+        <div class="modal-backdrop"></div>
+        <button class="modal-close-btn" aria-label="Cerrar visor">&times;</button>
+        <div class="modal-content">
+            <div class="modal-image-frame">
+                <img id="modal-img" src="" alt="Vista ampliada de obra">
+            </div>
+            <div class="modal-sidebar">
+                <span class="modal-badge">SALA DE EXHIBICIÓN</span>
+                <h3 id="modal-title" class="modal-title">Título de la Obra</h3>
+                <p id="modal-tech" class="modal-tech">Técnica y materiales</p>
+                <div class="modal-cta-wrapper">
+                    <a id="modal-wa-btn" href="#" target="_blank" rel="noopener" class="btn-primary">
+                        <span>Consultar por un retrato similar</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- LIBRERÍAS Y SCRIPTS -->
+    <script src="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.js"></script>
+    <script src="works-data.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
