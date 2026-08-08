@@ -18,7 +18,7 @@ const WORKS_DATA = [
         title: "Retrato Hiperrealista de Rostro",
         category: "personas",
         categoryLabel: "Personas",
-        image: "assets/images/personas/(3).jpg",
+        image: "assets/images/personas/nro56.jpg",
         technique: "Grafito & Carboncillo sobre papel Canson 300g",
         format: "Formato A3",
         featured: true
@@ -28,7 +28,7 @@ const WORKS_DATA = [
         title: "Retrato de Lionel Messi",
         category: "personas",
         categoryLabel: "Personas",
-        image: "assets/images/personas/(21).jpg",
+        image: "assets/images/hero/nro89.1.jpg",
         technique: "Grafito graduado (2H a 8B)",
         format: "Formato A3",
         featured: true
@@ -38,7 +38,7 @@ const WORKS_DATA = [
         title: "Retrato Individual",
         category: "personas",
         categoryLabel: "Personas",
-        image: "assets/images/personas/102.jpg",
+        image: "assets/images/hero/nro89.jpg",
         technique: "Grafito sobre papel Canson 300g",
         format: "Formato A4",
         featured: true
@@ -48,7 +48,7 @@ const WORKS_DATA = [
         title: "Mirada en Sombra",
         category: "personas",
         categoryLabel: "Personas",
-        image: "assets/images/personas/103.jpg",
+        image: "assets/images/personas/(21).jpg",
         technique: "Estudio de luces y claroscuro en carboncillo",
         format: "Formato A4",
         featured: true
@@ -58,7 +58,7 @@ const WORKS_DATA = [
         title: "Retrato Familiar / Pareja",
         category: "personas",
         categoryLabel: "Personas",
-        image: "assets/images/personas/29.jpg",
+        image: "assets/images/hero/Nro3.1.jpg",
         technique: "Formato A3 en papel libre de ácido",
         format: "Formato A3",
         featured: true
@@ -68,7 +68,7 @@ const WORKS_DATA = [
         title: "Estudio de Expresión N° 107",
         category: "personas",
         categoryLabel: "Personas",
-        image: "assets/images/personas/107.jpg",
+        image: "assets/images/hero/Nro3.jpg",
         technique: "Grafito fino alzada",
         format: "Formato A4",
         featured: false
@@ -78,7 +78,7 @@ const WORKS_DATA = [
         title: "Contraste Profundo N° 70",
         category: "personas",
         categoryLabel: "Personas",
-        image: "assets/images/personas/70.jpg",
+        image: "assets/images/mascotas/64.jpg",
         technique: "Carboncillo y esfumado",
         format: "Formato A3",
         featured: false
@@ -88,7 +88,7 @@ const WORKS_DATA = [
         title: "Retrato en Grafito N° 71",
         category: "personas",
         categoryLabel: "Personas",
-        image: "assets/images/personas/71.jpg",
+        image: "assets/images/hero/diego.jpg",
         technique: "Grafito puro sobre papel de 300g",
         format: "Formato A4",
         featured: false
@@ -98,53 +98,24 @@ const WORKS_DATA = [
         title: "Expresión Realista N° 91",
         category: "personas",
         categoryLabel: "Personas",
-        image: "assets/images/personas/91.jpg",
+        image: "assets/images/personas/nro91.1.jpg",
         technique: "Papel de algodón de textura fina",
         format: "Formato A3",
         featured: false
     },
 
     // --- CATEGORÍA: MASCOTAS ---
-    {
-        id: "mascota-01",
-        title: "Retrato de Mascota en Pelaje",
-        category: "mascotas",
-        categoryLabel: "Mascotas",
-        image: "assets/images/mascotas/(19).png",
-        technique: "Textura de pelaje hiperrealista a grafito",
-        format: "Formato A4",
-        featured: true
-    },
-    {
-        id: "mascota-02",
-        title: "Recuerdo Especial Mascotas",
-        category: "mascotas",
-        categoryLabel: "Mascotas",
-        image: "assets/images/mascotas/58.jpg",
-        technique: "Grafito y toques de blanco titanio",
-        format: "Formato A4",
-        featured: true
-    },
-    {
-        id: "mascota-03",
-        title: "Estudio de Trazo Canino",
-        category: "mascotas",
-        categoryLabel: "Mascotas",
-        image: "assets/images/mascotas/56.jpg",
-        technique: "Carboncillo fino y esfumado",
-        format: "Formato A4",
-        featured: false
-    },
+   
     {
         id: "mascota-04",
         title: "Detalle de Pelaje N° 64",
         category: "mascotas",
         categoryLabel: "Mascotas",
-        image: "assets/images/mascotas/64.jpg",
+        image: "assets/images/personas/70.jpg",
         technique: "Grafito 4B y 6B",
         format: "Formato A4",
         featured: false
-    },
+    }, 
     {
         id: "mascota-05",
         title: "Mirada Animal N° 65",
@@ -155,7 +126,36 @@ const WORKS_DATA = [
         format: "Formato A4",
         featured: false
     },
-
+     {
+        id: "mascota-01",
+        title: "Retrato de Mascota en Pelaje",
+        category: "mascotas",
+        categoryLabel: "Mascotas",
+        image: "assets/images/personas/71.jpg", 
+        technique: "Textura de pelaje hiperrealista a grafito",
+        format: "Formato A4",
+        featured: true
+    },
+    {
+        id: "mascota-02",
+        title: "Recuerdo Especial Mascotas",
+        category: "mascotas",
+        categoryLabel: "Mascotas",
+        image: "assets/images/mascotas/nro10.jpg",
+        technique: "Grafito y toques de blanco titanio",
+        format: "Formato A4",
+        featured: true
+    },
+    {
+        id: "mascota-03",
+        title: "Estudio de Trazo Canino",
+        category: "mascotas",
+        categoryLabel: "Mascotas",
+        image: "assets/images/mascotas/nro6.jpg",
+        technique: "Carboncillo fino y esfumado",
+        format: "Formato A4",
+        featured: false
+    },
     // --- CATEGORÍA: CUADROS Y OBRAS ORIGINALES ---
     {
         id: "cuadro-01",
