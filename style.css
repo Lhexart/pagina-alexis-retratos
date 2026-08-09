@@ -9,7 +9,7 @@
    1. VARIABLES CSS / DESIGN TOKENS
    -------------------------------------------------------------------------- */
 :root {
-    /* Paleta de Colores (Grafito, Carbón & Oro Champán) */
+    /* Tema Oscuro (Por Defecto - Galería Nocturna) */
     --color-bg-base: #070709;
     --color-bg-surface: #0e0e12;
     --color-bg-card: #14141c;
@@ -30,6 +30,15 @@
 
     --color-border: rgba(247, 246, 242, 0.07);
     --color-border-hover: rgba(212, 175, 55, 0.4);
+
+    --hero-bg-radial: radial-gradient(circle at 70% 40%, rgba(35, 35, 48, 0.7) 0%, rgba(7, 7, 9, 0.98) 70%);
+
+    /* Lightbox Modal Variables (Siempre oscuras) */
+    --modal-bg-backdrop: rgba(5, 5, 7, 0.94);
+    --modal-bg-card: #14141c;
+    --modal-text-main: #f7f6f2;
+    --modal-text-muted: #a09f98;
+    --modal-border: rgba(212, 175, 55, 0.4);
 
     /* Tipografía Editorial */
     --font-serif: 'Cormorant Garamond', Georgia, serif;
@@ -80,6 +89,7 @@
     --transition-fast: 0.2s var(--ease-out);
     --transition-base: 0.4s var(--ease-out);
     --transition-slow: 0.8s var(--ease-out);
+    --transition-theme: 250ms ease;
 
     /* Capas Z-Index */
     --z-below: -1;
@@ -87,6 +97,35 @@
     --z-header: 100;
     --z-toggle: 200;
     --z-modal: 1000;
+}
+
+/* --------------------------------------------------------------------------
+   TEMA CLARO (Catálogo Editorial / Hoja de Papel de Alta Calidad)
+   -------------------------------------------------------------------------- */
+[data-theme="light"] {
+    --color-bg-base: #E8E8E6;
+    --color-bg-surface: #F2F2F0;
+    --color-bg-card: #FAFAF8;
+    --color-bg-card-hover: #E3E3E0;
+    --color-bg-glass: rgba(232, 232, 230, 0.90);
+
+    --color-text-main: #1C1C1C;
+    --color-text-muted: #5A5A58;
+    --color-text-subtle: #7A7A78;
+
+    --color-accent-gold: #ab8213;
+    --color-accent-gold-light: #8e6b0f;
+    --color-accent-gold-glow: rgba(171, 130, 19, 0.12);
+
+    --color-border: rgba(28, 28, 28, 0.11);
+    --color-border-hover: rgba(171, 130, 19, 0.45);
+
+    --hero-bg-radial: radial-gradient(circle at 70% 40%, rgba(225, 225, 220, 0.85) 0%, rgba(232, 232, 230, 1) 70%);
+
+    --shadow-sm: 0 4px 16px rgba(0, 0, 0, 0.05);
+    --shadow-md: 0 12px 32px rgba(0, 0, 0, 0.07);
+    --shadow-lg: 0 24px 60px rgba(0, 0, 0, 0.10);
+    --shadow-directional: 16px 24px 50px rgba(0, 0, 0, 0.10), 0 0 35px rgba(171, 130, 19, 0.05);
 }
 
 /* --------------------------------------------------------------------------
@@ -113,6 +152,29 @@ body {
     overflow-x: hidden;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    transition: background-color var(--transition-theme), color var(--transition-theme);
+    position: relative;
+}
+
+body::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    pointer-events: none;
+    z-index: 9999;
+    opacity: 0.022;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+    background-repeat: repeat;
+    mix-blend-mode: overlay;
+    transition: opacity var(--transition-theme);
+}
+
+[data-theme="light"] body::before {
+    opacity: 0.035;
+    mix-blend-mode: multiply;
 }
 
 body.no-scroll {
@@ -236,6 +298,55 @@ section {
     border-color: var(--color-accent-gold);
     color: var(--color-accent-gold);
     transform: translateY(-2px);
+}
+
+.header-actions {
+    display: flex;
+    align-items: center;
+    gap: var(--space-xs);
+}
+
+.theme-toggle-btn {
+    background: transparent;
+    border: 1px solid var(--color-border);
+    color: var(--color-text-muted);
+    width: 36px;
+    height: 36px;
+    border-radius: var(--radius-full);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    padding: 0;
+    flex-shrink: 0;
+}
+
+.theme-toggle-btn:hover {
+    color: var(--color-accent-gold);
+    border-color: var(--color-accent-gold);
+    background-color: var(--color-accent-gold-glow);
+    transform: translateY(-1px);
+}
+
+.theme-icon {
+    transition: transform var(--transition-fast);
+}
+
+.theme-icon-sun {
+    display: none;
+}
+
+.theme-icon-moon {
+    display: block;
+}
+
+[data-theme="light"] .theme-icon-sun {
+    display: block;
+}
+
+[data-theme="light"] .theme-icon-moon {
+    display: none;
 }
 
 .btn-header-wa {
@@ -380,7 +491,34 @@ section {
     align-items: center;
     position: relative;
     overflow: hidden;
-    background: radial-gradient(circle at 70% 40%, rgba(35, 35, 48, 0.7) 0%, rgba(7, 7, 9, 0.98) 70%), var(--color-bg-base);
+    background-color: var(--color-bg-base);
+}
+
+.hero-section::before {
+    content: "";
+    position: absolute;
+    inset: -12%;
+    background: var(--hero-bg-radial);
+    pointer-events: none;
+    z-index: 0;
+    animation: heroSpotlightBreathing 48s ease-in-out infinite alternate;
+    will-change: transform, opacity;
+    transition: background var(--transition-theme);
+}
+
+@keyframes heroSpotlightBreathing {
+    0% {
+        transform: scale(1) translate(0, 0);
+        opacity: 0.96;
+    }
+    50% {
+        transform: scale(1.025) translate(-0.8%, 0.8%);
+        opacity: 1.02;
+    }
+    100% {
+        transform: scale(1.01) translate(0.8%, -0.8%);
+        opacity: 0.98;
+    }
 }
 
 .hero-container {
@@ -389,6 +527,8 @@ section {
     gap: var(--space-xl);
     align-items: center;
     min-height: 75vh;
+    position: relative;
+    z-index: var(--z-base);
 }
 
 /* Lado Izquierdo: Titular Monumental & Único CTA */
@@ -456,8 +596,22 @@ section {
     border: none;
     box-shadow: var(--shadow-directional);
     cursor: pointer;
-    transition: transform 0.15s ease-out, box-shadow 0.3s ease;
+    transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s ease;
     perspective: 1000px;
+    animation: artworkGentleFloat 12s ease-in-out infinite alternate;
+    will-change: transform;
+}
+
+@keyframes artworkGentleFloat {
+    0% {
+        transform: translateY(0px) rotate(0deg);
+    }
+    50% {
+        transform: translateY(-1.8px) rotate(-0.1deg);
+    }
+    100% {
+        transform: translateY(1px) rotate(0.1deg);
+    }
 }
 
 .hero-interactive-img {
@@ -564,14 +718,18 @@ section {
     border: 1px solid var(--color-border);
     border-radius: var(--radius-md);
     overflow: hidden;
-    transition: all var(--transition-base);
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.4s ease, box-shadow 0.4s ease;
     cursor: pointer;
 }
 
 .artwork-card:hover {
     border-color: var(--color-border-hover);
-    transform: translateY(-6px);
-    box-shadow: var(--shadow-md);
+    transform: translateY(-4px);
+    box-shadow: 0 16px 36px rgba(0, 0, 0, 0.22);
+}
+
+[data-theme="light"] .artwork-card:hover {
+    box-shadow: 0 16px 36px rgba(0, 0, 0, 0.08);
 }
 
 .artwork-image {
@@ -677,7 +835,7 @@ section {
     z-index: 1010;
     background: transparent;
     border: none;
-    color: var(--color-text-muted);
+    color: var(--modal-text-muted);
     font-size: 2.5rem;
     line-height: 1;
     cursor: pointer;
@@ -697,8 +855,8 @@ section {
     max-width: 1050px;
     width: 90%;
     max-height: 88vh;
-    background-color: var(--color-bg-card);
-    border: 1px solid var(--color-border-hover);
+    background-color: var(--modal-bg-card);
+    border: 1px solid var(--modal-border);
     border-radius: var(--radius-xl);
     padding: var(--space-xl);
     box-shadow: var(--shadow-lg);
@@ -720,12 +878,20 @@ section {
     overflow: hidden;
     border-radius: var(--radius-md);
     background-color: #000000;
+    position: relative;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: none;
 }
 
 .modal-image-frame img {
     max-width: 100%;
     max-height: 70vh;
     object-fit: contain;
+    cursor: zoom-in;
+    transform-origin: center center;
+    transition: transform 0.08s ease-out;
+    will-change: transform;
 }
 
 .modal-sidebar {
@@ -746,13 +912,13 @@ section {
 .modal-title {
     font-family: var(--font-serif);
     font-size: var(--fs-2xl);
-    color: var(--color-text-main);
+    color: var(--modal-text-main);
     margin-bottom: var(--space-xs);
 }
 
 .modal-tech {
     font-size: var(--fs-sm);
-    color: var(--color-text-muted);
+    color: var(--modal-text-muted);
     margin-bottom: var(--space-xl);
     line-height: var(--lh-relaxed);
 }
@@ -1200,5 +1366,46 @@ section {
 
     .hero-artwork-frame {
         max-width: 100%;
+        animation-duration: 16s;
+    }
+}
+
+/* --------------------------------------------------------------------------
+   11. MICROINTERACCIONES, SCROLL REVEAL Y ACCESIBILIDAD (PREFERS-REDUCED-MOTION)
+   -------------------------------------------------------------------------- */
+.reveal-on-scroll {
+    opacity: 0;
+    transform: translateY(12px);
+    transition: opacity 0.65s cubic-bezier(0.16, 1, 0.3, 1), transform 0.65s cubic-bezier(0.16, 1, 0.3, 1);
+    will-change: opacity, transform;
+}
+
+.reveal-on-scroll.revealed {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+@media (max-width: 768px) {
+    .reveal-on-scroll {
+        transform: translateY(8px);
+        transition-duration: 0.5s;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+    .hero-section::before,
+    .hero-artwork-frame {
+        animation: none !important;
+    }
+    .reveal-on-scroll {
+        opacity: 1 !important;
+        transform: none !important;
+        transition: none !important;
     }
 }

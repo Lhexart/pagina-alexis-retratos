@@ -1,0 +1,8 @@
+{
+  "name": "Alexis Retratos a Lápiz",
+  "description": "Retratos a lápiz hechos a mano por Alexis. Arte hiperrealista por encargo en grafito y carboncillo.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
