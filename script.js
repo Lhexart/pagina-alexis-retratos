@@ -73,7 +73,7 @@ document.addEventListener("DOMContentLoaded", function () {
         });
 
         heroFrame.addEventListener("click", function () {
-            openModal("assets/images/personas/(3).jpg", "Retrato Hiperrealista de Rostro", "Grafito & Carboncillo sobre papel Canson 300g — Formato A3");
+            openModal("assets/images/hero/nro38.1.jpg", "Retrato Hiperrealista de Rostro", "Grafito & Carboncillo sobre papel Canson 300g — Formato A3");
         });
     }
 
@@ -111,6 +111,10 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
+    // Colección de obras visibles para navegación del Lightbox
+    let activeWorksList = [];
+    let currentActiveIndex = -1;
+
     function renderGallery(category) {
         if (!dynamicGalleryGrid || typeof WORKS_DATA === "undefined") return;
         dynamicGalleryGrid.innerHTML = "";
@@ -118,6 +122,8 @@ document.addEventListener("DOMContentLoaded", function () {
         const filteredWorks = category === "todas" 
             ? WORKS_DATA 
             : WORKS_DATA.filter(work => work.category === category);
+
+        activeWorksList = filteredWorks; // Guardar obras visibles
 
         filteredWorks.forEach((work, index) => {
             const article = document.createElement("article");
@@ -143,13 +149,13 @@ document.addEventListener("DOMContentLoaded", function () {
             `;
 
             article.addEventListener("click", () => {
-                openModal(work.image, work.title, `${work.technique} — ${work.format}`);
+                openModalByIndex(index);
             });
 
             article.addEventListener("keydown", (e) => {
                 if (e.key === "Enter" || e.key === " ") {
                     e.preventDefault();
-                    openModal(work.image, work.title, `${work.technique} — ${work.format}`);
+                    openModalByIndex(index);
                 }
             });
 
@@ -330,6 +336,65 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
+    const modalPrevBtn = document.getElementById("modal-prev-btn");
+    const modalNextBtn = document.getElementById("modal-next-btn");
+    const modalCounter = document.getElementById("modal-counter");
+
+    function updateModalCounter() {
+        if (!modalCounter) return;
+        if (currentActiveIndex >= 0 && activeWorksList.length > 0) {
+            const currentNum = String(currentActiveIndex + 1).padStart(2, "0");
+            const totalNum = String(activeWorksList.length).padStart(2, "0");
+            modalCounter.textContent = `${currentNum} / ${totalNum}`;
+            modalCounter.style.visibility = "visible";
+            if (modalPrevBtn) modalPrevBtn.style.visibility = "visible";
+            if (modalNextBtn) modalNextBtn.style.visibility = "visible";
+        } else {
+            modalCounter.style.visibility = "hidden";
+            if (modalPrevBtn) modalPrevBtn.style.visibility = "hidden";
+            if (modalNextBtn) modalNextBtn.style.visibility = "hidden";
+        }
+    }
+
+    function openModalByIndex(index) {
+        if (index < 0 || index >= activeWorksList.length) return;
+        currentActiveIndex = index;
+        const work = activeWorksList[index];
+        openModal(work.image, work.title, `${work.technique} — ${work.format}`);
+    }
+
+    function showNextArtwork() {
+        if (activeWorksList.length === 0 || currentActiveIndex < 0) return;
+        let nextIndex = currentActiveIndex + 1;
+        if (nextIndex >= activeWorksList.length) {
+            nextIndex = 0;
+        }
+        openModalByIndex(nextIndex);
+    }
+
+    function showPrevArtwork() {
+        if (activeWorksList.length === 0 || currentActiveIndex < 0) return;
+        let prevIndex = currentActiveIndex - 1;
+        if (prevIndex < 0) {
+            prevIndex = activeWorksList.length - 1;
+        }
+        openModalByIndex(prevIndex);
+    }
+
+    if (modalPrevBtn) {
+        modalPrevBtn.addEventListener("click", function (e) {
+            e.stopPropagation();
+            showPrevArtwork();
+        });
+    }
+
+    if (modalNextBtn) {
+        modalNextBtn.addEventListener("click", function (e) {
+            e.stopPropagation();
+            showNextArtwork();
+        });
+    }
+
     function openModal(imgSrc, title, tech) {
         if (!artModal || !modalImg) return;
         resetLightboxZoom();
@@ -344,6 +409,8 @@ document.addEventListener("DOMContentLoaded", function () {
             modalWaBtn.href = `https://wa.me/?text=Hola%20Alexis,%20estaba%20viendo%20tu%20web%20y%20me%20interes%C3%B3%20la%20obra%20"${encodedTitle}".%20Quisiera%20consultar%20presupuesto%20para%20un%20encargo%20similar.`;
         }
 
+        updateModalCounter();
+
         artModal.classList.add("active");
         artModal.setAttribute("aria-hidden", "false");
         document.body.classList.add("no-scroll");
@@ -354,6 +421,7 @@ document.addEventListener("DOMContentLoaded", function () {
     function closeModal() {
         if (!artModal) return;
         resetLightboxZoom();
+        currentActiveIndex = -1;
         artModal.classList.remove("active");
         artModal.setAttribute("aria-hidden", "true");
         document.body.classList.remove("no-scroll");
@@ -361,11 +429,49 @@ document.addEventListener("DOMContentLoaded", function () {
 
     if (modalCloseBtn) modalCloseBtn.addEventListener("click", closeModal);
     if (modalBackdrop) modalBackdrop.addEventListener("click", closeModal);
+
     document.addEventListener("keydown", (e) => {
-        if (e.key === "Escape" && artModal && artModal.classList.contains("active")) {
-            closeModal();
+        if (artModal && artModal.classList.contains("active")) {
+            if (e.key === "Escape") {
+                closeModal();
+            } else if (e.key === "ArrowRight") {
+                showNextArtwork();
+            } else if (e.key === "ArrowLeft") {
+                showPrevArtwork();
+            }
         }
     });
+
+    // Soporte para gestos táctiles (Swipe)
+    let touchStartX = 0;
+    let touchEndX = 0;
+
+    if (artModal) {
+        const modalFrame = artModal.querySelector(".modal-image-frame");
+        if (modalFrame) {
+            modalFrame.addEventListener("touchstart", (e) => {
+                if (zoomScale === 1 && e.touches.length === 1) {
+                    touchStartX = e.touches[0].clientX;
+                }
+            }, { passive: true });
+
+            modalFrame.addEventListener("touchend", (e) => {
+                if (zoomScale === 1 && touchStartX > 0) {
+                    touchEndX = e.changedTouches[0].clientX;
+                    const diffX = touchStartX - touchEndX;
+                    const threshold = 55;
+                    if (Math.abs(diffX) > threshold) {
+                        if (diffX > 0) {
+                            showNextArtwork();
+                        } else {
+                            showPrevArtwork();
+                        }
+                    }
+                    touchStartX = 0;
+                }
+            }, { passive: true });
+        }
+    }
 
     // ----------------------------------------------------------------------
     // 4. REVEAL ELEGANTE AL HACER SCROLL (INTERSECTION OBSERVER)
@@ -374,7 +480,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     function initScrollReveal() {
         const revealTargets = document.querySelectorAll(
-            ".section-header, .comparison-card, .process-feature, .step-card, .about-card, .contact-card, .hero-text-side"
+            ".section-header, .comparison-slider, .process-feature, .step-card, .about-card, .contact-card, .hero-text-side"
         );
 
         revealTargets.forEach((el) => {
@@ -409,6 +515,93 @@ document.addEventListener("DOMContentLoaded", function () {
         if (!revealObserver) return;
         document.querySelectorAll(".reveal-on-scroll:not(.revealed)").forEach((el) => {
             revealObserver.observe(el);
+        });
+    }
+
+    // ----------------------------------------------------------------------
+    // 5. NAVEGACIÓN MÓVIL ACCESIBLE
+    // ----------------------------------------------------------------------
+    const menuToggleBtn = document.getElementById("menu-toggle");
+    const mainNav = document.getElementById("main-nav");
+
+    if (menuToggleBtn && mainNav) {
+        menuToggleBtn.addEventListener("click", function () {
+            const isOpen = menuToggleBtn.getAttribute("aria-expanded") === "true";
+            menuToggleBtn.setAttribute("aria-expanded", !isOpen);
+            mainNav.classList.toggle("active", !isOpen);
+        });
+
+        const navLinks = mainNav.querySelectorAll("a");
+        navLinks.forEach(link => {
+            link.addEventListener("click", function () {
+                menuToggleBtn.setAttribute("aria-expanded", "false");
+                mainNav.classList.remove("active");
+            });
+        });
+        
+        document.addEventListener("click", function (e) {
+            if (!mainNav.contains(e.target) && !menuToggleBtn.contains(e.target) && mainNav.classList.contains("active")) {
+                menuToggleBtn.setAttribute("aria-expanded", "false");
+                mainNav.classList.remove("active");
+            }
+        });
+    }
+
+    // ----------------------------------------------------------------------
+    // 6. COMPARADOR DESLIZANTE ANTES / DESPUÉS (SLIDER INTERACTIVO)
+    // ----------------------------------------------------------------------
+    const beforeAfterSlider = document.getElementById("before-after-slider");
+    const sliderAfterLayer = document.getElementById("slider-after-layer");
+    const sliderHandle = document.getElementById("slider-handle");
+
+    if (beforeAfterSlider && sliderAfterLayer && sliderHandle) {
+        let isResizing = false;
+
+        function setSliderPosition(clientX) {
+            const rect = beforeAfterSlider.getBoundingClientRect();
+            const offsetX = clientX - rect.left;
+            let percentage = (offsetX / rect.width) * 100;
+
+            if (percentage < 0) percentage = 0;
+            if (percentage > 100) percentage = 100;
+
+            sliderAfterLayer.style.width = `${percentage}%`;
+            sliderHandle.style.left = `${percentage}%`;
+        }
+
+        sliderHandle.addEventListener("mousedown", function (e) {
+            e.preventDefault();
+            isResizing = true;
+        });
+
+        window.addEventListener("mouseup", function () {
+            isResizing = false;
+        });
+
+        window.addEventListener("mousemove", function (e) {
+            if (!isResizing) return;
+            setSliderPosition(e.clientX);
+        });
+
+        sliderHandle.addEventListener("touchstart", function () {
+            isResizing = true;
+        }, { passive: true });
+
+        window.addEventListener("touchend", function () {
+            isResizing = false;
+        });
+
+        window.addEventListener("touchmove", function (e) {
+            if (!isResizing) return;
+            if (e.touches.length > 0) {
+                setSliderPosition(e.touches[0].clientX);
+            }
+        }, { passive: true });
+
+        beforeAfterSlider.addEventListener("click", function (e) {
+            if (e.target !== sliderHandle && !sliderHandle.contains(e.target)) {
+                setSliderPosition(e.clientX);
+            }
         });
     }
 

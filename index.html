@@ -11,8 +11,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     
-    <!-- Librería Swiper para Carruseles -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.css" />
+    <!-- Estilos del Portafolio -->
     
     <!-- Inline Anti-FOUC script para el sistema de temas -->
     <script>
@@ -40,13 +39,12 @@
                 <span class="brand-sub">Retratos a Lápiz</span>
             </a>
 
-            <input type="checkbox" id="menu-toggle" class="menu-toggle-input" />
-            <label for="menu-toggle" class="menu-toggle-label" aria-label="Abrir menú de navegación">
+            <button id="menu-toggle" class="menu-toggle-btn" aria-label="Abrir menú de navegación" aria-expanded="false" aria-controls="main-nav">
                 <span class="bar"></span>
                 <span class="bar"></span>
-            </label>
+            </button>
 
-            <nav class="main-nav" aria-label="Navegación principal">
+            <nav id="main-nav" class="main-nav" aria-label="Navegación principal">
                 <ul class="nav-links">
                     <li><a href="#inicio">Inicio</a></li>
                     <li><a href="#obras">Obras</a></li>
@@ -102,7 +100,7 @@
                 <!-- Lado Derecho: Obra Protagonista Dominate con Sombra Direccional Realista -->
                 <div class="hero-visual-side">
                     <div class="hero-artwork-frame" id="hero-artwork-frame">
-                        <img src="assets/images/personas/nro56.jpg" alt="Retrato a lápiz hiperrealista hecho a mano alzada por Alexis" id="hero-interactive-img" class="hero-interactive-img">
+                        <img src="assets/images/hero/nro38.1.jpg" alt="Retrato a lápiz hiperrealista hecho a mano alzada por Alexis" id="hero-interactive-img" class="hero-interactive-img">
                     </div>
                 </div>
             </div>
@@ -149,17 +147,29 @@
                 </div>
 
                 <div class="comparison-showcase">
-                    <div class="comparison-card">
-                        <div class="comparison-side">
-                            <span class="tag-label">Fotografía Original</span>
+                    <div class="comparison-slider" id="before-after-slider">
+                        <!-- Imagen de Fondo (Antes / Foto) -->
+                        <div class="comparison-img-before">
                             <img src="assets/images/personas/nro45.1.jpg" alt="Fotografía original de referencia" loading="lazy">
+                            <span class="tag-label tag-before">Fotografía Original</span>
                         </div>
-                        <div class="comparison-divider">
-                            <span class="vs-badge">VS</span>
+                        <!-- Imagen Superpuesta (Después / Dibujo) -->
+                        <div class="comparison-img-after" id="slider-after-layer">
+                            <div class="after-img-wrapper">
+                                <img src="assets/images/personas/nro45.jpg" alt="Retrato finalizado a lápiz por Alexis" loading="lazy">
+                                <span class="tag-label tag-after">Retrato Finalizado a Lápiz</span>
+                            </div>
                         </div>
-                        <div class="comparison-side">
-                            <span class="tag-label">Retrato Finalizado a Lápiz</span>
-                            <img src="assets/images/personas/nro56.jpg" alt="Resultado final dibujado a mano" loading="lazy">
+                        <!-- Barra de Control del Slider -->
+                        <div class="comparison-handle" id="slider-handle">
+                            <div class="handle-line"></div>
+                            <div class="handle-button" aria-label="Deslizar para comparar">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <polyline points="15 18 9 12 15 6"></polyline>
+                                    <polyline points="9 18 15 12 9 6"></polyline>
+                                </svg>
+                            </div>
+                            <div class="handle-line"></div>
                         </div>
                     </div>
                 </div>
@@ -311,12 +321,30 @@
     <div id="art-modal" class="art-modal" aria-hidden="true" role="dialog" aria-modal="true" aria-label="Visor de Obra en Alta Definición">
         <div class="modal-backdrop"></div>
         <button class="modal-close-btn" aria-label="Cerrar visor">&times;</button>
+        
+        <!-- Flechas de navegación para Desktop/Tablet -->
+        <button class="modal-nav-btn prev-btn" aria-label="Obra anterior" id="modal-prev-btn">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="19" y1="12" x2="5" y2="12"></line>
+                <polyline points="12 19 5 12 12 5"></polyline>
+            </svg>
+        </button>
+        <button class="modal-nav-btn next-btn" aria-label="Obra siguiente" id="modal-next-btn">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="5" y1="12" x2="19" y2="12"></line>
+                <polyline points="12 5 19 12 12 19"></polyline>
+            </svg>
+        </button>
+
         <div class="modal-content">
             <div class="modal-image-frame">
                 <img id="modal-img" src="" alt="Vista ampliada de obra">
             </div>
             <div class="modal-sidebar">
-                <span class="modal-badge">SALA DE EXHIBICIÓN</span>
+                <div class="modal-sidebar-header">
+                    <span class="modal-badge">SALA DE EXHIBICIÓN</span>
+                    <span class="modal-counter" id="modal-counter">00 / 00</span>
+                </div>
                 <h3 id="modal-title" class="modal-title">Título de la Obra</h3>
                 <p id="modal-tech" class="modal-tech">Técnica y materiales</p>
                 <div class="modal-cta-wrapper">
@@ -329,7 +357,6 @@
     </div>
 
     <!-- LIBRERÍAS Y SCRIPTS -->
-    <script src="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.js"></script>
     <script src="works-data.js"></script>
     <script src="script.js"></script>
 </body>

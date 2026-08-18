@@ -78,7 +78,7 @@ const WORKS_DATA = [
         title: "Contraste Profundo N° 70",
         category: "personas",
         categoryLabel: "Personas",
-        image: "assets/images/mascotas/64.jpg",
+        image: "assets/images/personas/70.jpg",
         technique: "Carboncillo y esfumado",
         format: "Formato A3",
         featured: false
@@ -111,7 +111,7 @@ const WORKS_DATA = [
         title: "Detalle de Pelaje N° 64",
         category: "mascotas",
         categoryLabel: "Mascotas",
-        image: "assets/images/personas/70.jpg",
+        image: "assets/images/mascotas/64.jpg",
         technique: "Grafito 4B y 6B",
         format: "Formato A4",
         featured: false
