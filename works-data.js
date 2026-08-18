@@ -78,7 +78,7 @@ const WORKS_DATA = [
         title: "Contraste Profundo N° 70",
         category: "personas",
         categoryLabel: "Personas",
-        image: "assets/images/personas/70.jpg",
+        image: "assets/images/personas/102.jpg",
         technique: "Carboncillo y esfumado",
         format: "Formato A3",
         featured: false
@@ -121,7 +121,7 @@ const WORKS_DATA = [
         title: "Mirada Animal N° 65",
         category: "mascotas",
         categoryLabel: "Mascotas",
-        image: "assets/images/mascotas/65.jpg",
+        image: "assets/images/mascotas/(19).png",
         technique: "Papel Canson 300g",
         format: "Formato A4",
         featured: false
@@ -131,7 +131,7 @@ const WORKS_DATA = [
         title: "Retrato de Mascota en Pelaje",
         category: "mascotas",
         categoryLabel: "Mascotas",
-        image: "assets/images/personas/71.jpg", 
+        image: "assets/images/mascotas/nro8.jpg", 
         technique: "Textura de pelaje hiperrealista a grafito",
         format: "Formato A4",
         featured: true
@@ -162,7 +162,7 @@ const WORKS_DATA = [
         title: "Estudio de Sombras N° 69",
         category: "cuadros",
         categoryLabel: "Cuadros & Obras",
-        image: "assets/images/personas/69.jpg",
+        image: "assets/images/personas/103.jpg",
         technique: "Grafito puro y carboncillo comprimido",
         format: "Formato A2",
         featured: true
@@ -172,7 +172,7 @@ const WORKS_DATA = [
         title: "Composición de Luces N° 75",
         category: "cuadros",
         categoryLabel: "Cuadros & Obras",
-        image: "assets/images/personas/75.jpg",
+        image: "assets/images/personas/(3).jpg",
         technique: "Sombreado a mano alzada",
         format: "Formato A3",
         featured: false
@@ -182,7 +182,7 @@ const WORKS_DATA = [
         title: "Obra de Gran Formato N° 88",
         category: "cuadros",
         categoryLabel: "Cuadros & Obras",
-        image: "assets/images/personas/88.jpg",
+        image: "assets/images/personas/nro91.jpg",
         technique: "Grafito graduado sobre papel especial",
         format: "Formato A2",
         featured: false

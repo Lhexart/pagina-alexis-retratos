@@ -78,11 +78,20 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     // ----------------------------------------------------------------------
-    // 2. RENDERIZADO Y FILTRADO DINÁMICO DE LA GALERÍA (WORKS_DATA)
+    // 2. RENDERIZADO Y FILTRADO DINÁMICO DE LA GALERÍA CON CARGA PROGRESIVA
     // ----------------------------------------------------------------------
     const categoryFiltersContainer = document.getElementById("category-filters");
     const dynamicGalleryGrid = document.getElementById("dynamic-gallery");
+    const loadMoreContainer = document.getElementById("gallery-load-more-container");
+    const loadMoreBtn = document.getElementById("load-more-btn");
+
+    const INITIAL_VISIBLE_COUNT = 9;
+    const ITEMS_PER_LOAD = 6;
+
     let currentCategory = "todas";
+    let currentVisibleCount = INITIAL_VISIBLE_COUNT;
+    let activeWorksList = [];
+    let currentActiveIndex = -1;
 
     function renderCategoryFilters() {
         if (!categoryFiltersContainer || typeof GALLERY_CATEGORIES === "undefined") return;
@@ -97,6 +106,7 @@ document.addEventListener("DOMContentLoaded", function () {
             btn.textContent = cat.label;
 
             btn.addEventListener("click", () => {
+                if (currentCategory === cat.id) return;
                 currentCategory = cat.id;
                 document.querySelectorAll(".category-btn").forEach(b => {
                     b.classList.remove("active");
@@ -104,154 +114,291 @@ document.addEventListener("DOMContentLoaded", function () {
                 });
                 btn.classList.add("active");
                 btn.setAttribute("aria-selected", "true");
-                renderGallery(currentCategory);
+                currentVisibleCount = INITIAL_VISIBLE_COUNT;
+                renderGallery(currentCategory, false);
             });
 
             categoryFiltersContainer.appendChild(btn);
         });
     }
 
-    // Colección de obras visibles para navegación del Lightbox
-    let activeWorksList = [];
-    let currentActiveIndex = -1;
+    function createArtworkCard(work, index, staggerIndex = 0) {
+        const article = document.createElement("article");
+        article.className = "artwork-card filter-trigger reveal-on-scroll";
+        article.style.transitionDelay = `${(staggerIndex % 6) * 0.05}s`;
+        article.setAttribute("data-title", work.title);
+        article.setAttribute("data-tech", `${work.technique} — ${work.format}`);
+        article.setAttribute("role", "button");
+        article.setAttribute("tabindex", "0");
+        article.setAttribute("aria-label", `Ver ${work.title} en detalle`);
 
-    function renderGallery(category) {
+        article.innerHTML = `
+            <div class="artwork-image">
+                <img src="${work.image}" alt="${work.title} - Retrato a lápiz por Alexis" loading="lazy">
+                <div class="view-overlay">
+                    <span>Ver en detalle</span>
+                </div>
+            </div>
+            <div class="artwork-info">
+                <h3>${work.title}</h3>
+                <p>${work.technique}</p>
+            </div>
+        `;
+
+        article.addEventListener("click", () => {
+            openModalByIndex(index);
+        });
+
+        article.addEventListener("keydown", (e) => {
+            if (e.key === "Enter" || e.key === " ") {
+                e.preventDefault();
+                openModalByIndex(index);
+            }
+        });
+
+        return article;
+    }
+
+    function renderGallery(category, append = false) {
         if (!dynamicGalleryGrid || typeof WORKS_DATA === "undefined") return;
-        dynamicGalleryGrid.innerHTML = "";
 
         const filteredWorks = category === "todas" 
             ? WORKS_DATA 
             : WORKS_DATA.filter(work => work.category === category);
 
-        activeWorksList = filteredWorks; // Guardar obras visibles
+        activeWorksList = filteredWorks; // Guardar obras filtradas completas para Lightbox
 
-        filteredWorks.forEach((work, index) => {
-            const article = document.createElement("article");
-            article.className = "artwork-card filter-trigger reveal-on-scroll";
-            article.style.transitionDelay = `${(index % 6) * 0.05}s`;
-            article.setAttribute("data-title", work.title);
-            article.setAttribute("data-tech", `${work.technique} — ${work.format}`);
-            article.setAttribute("role", "button");
-            article.setAttribute("tabindex", "0");
-            article.setAttribute("aria-label", `Ver ${work.title} en detalle`);
+        const totalItems = filteredWorks.length;
+        let startIndex = 0;
 
-            article.innerHTML = `
-                <div class="artwork-image">
-                    <img src="${work.image}" alt="${work.title} - Retrato a lápiz por Alexis" loading="lazy">
-                    <div class="view-overlay">
-                        <span>Ver en detalle</span>
-                    </div>
-                </div>
-                <div class="artwork-info">
-                    <h3>${work.title}</h3>
-                    <p>${work.technique}</p>
-                </div>
-            `;
+        if (!append) {
+            dynamicGalleryGrid.innerHTML = "";
+            currentVisibleCount = Math.min(INITIAL_VISIBLE_COUNT, totalItems);
+            startIndex = 0;
+        } else {
+            startIndex = dynamicGalleryGrid.children.length;
+            currentVisibleCount = Math.min(startIndex + ITEMS_PER_LOAD, totalItems);
+        }
 
-            article.addEventListener("click", () => {
-                openModalByIndex(index);
-            });
+        for (let i = startIndex; i < currentVisibleCount; i++) {
+            const card = createArtworkCard(filteredWorks[i], i, i - startIndex);
+            dynamicGalleryGrid.appendChild(card);
+        }
 
-            article.addEventListener("keydown", (e) => {
-                if (e.key === "Enter" || e.key === " ") {
-                    e.preventDefault();
-                    openModalByIndex(index);
-                }
-            });
+        // Control de visibilidad del botón "Ver más obras"
+        if (loadMoreContainer) {
+            if (currentVisibleCount < totalItems) {
+                loadMoreContainer.style.display = "flex";
+            } else {
+                loadMoreContainer.style.display = "none";
+            }
+        }
 
-            dynamicGalleryGrid.appendChild(article);
-        });
-
-        // Observar las nuevas cards de la galería
+        // Observar las nuevas cards de la galería para animación de entrada
         observeRevealElements();
     }
 
+    if (loadMoreBtn) {
+        loadMoreBtn.addEventListener("click", () => {
+            renderGallery(currentCategory, true);
+        });
+    }
+
     // ----------------------------------------------------------------------
-    // 3. VISOR LIGHTBOX MODAL (#art-modal) CON INSPECCIÓN Y ZOOM
+    // 3. VISOR LIGHTBOX MODAL (#art-modal) — SALA DE EXHIBICIÓN Y ZOOM
     // ----------------------------------------------------------------------
     const artModal = document.getElementById("art-modal");
     const modalImg = document.getElementById("modal-img");
+    const modalImageFrame = document.getElementById("modal-image-frame");
     const modalTitle = document.getElementById("modal-title");
     const modalTech = document.getElementById("modal-tech");
     const modalWaBtn = document.getElementById("modal-wa-btn");
     const modalCloseBtn = document.querySelector(".modal-close-btn");
     const modalBackdrop = document.querySelector(".modal-backdrop");
+    const modalPrevBtn = document.getElementById("modal-prev-btn");
+    const modalNextBtn = document.getElementById("modal-next-btn");
+    const modalCounter = document.getElementById("modal-counter");
 
-    // Control de Zoom y Panning
+    // Controles de Zoom del Toolbar
+    const modalZoomInBtn = document.getElementById("modal-zoom-in-btn");
+    const modalZoomOutBtn = document.getElementById("modal-zoom-out-btn");
+    const modalZoomResetBtn = document.getElementById("modal-zoom-reset-btn");
+    const modalZoomLevel = document.getElementById("modal-zoom-level");
+
+    // Estado del Zoom y Panning en Alta Definición
     let zoomScale = 1;
     let zoomTranslateX = 0;
     let zoomTranslateY = 0;
+    let baseWidth = 0;
+    let baseHeight = 0;
     let isDragging = false;
-    let startX = 0;
-    let startY = 0;
+    let dragStartX = 0;
+    let dragStartY = 0;
     let initialTouchDist = 0;
     let initialTouchScale = 1;
     let lastTapTime = 0;
 
-    function resetLightboxZoom() {
+    function calculateBaseDimensions() {
+        if (!modalImageFrame || !modalImg || !modalImg.naturalWidth) return;
+        const frameW = modalImageFrame.clientWidth;
+        const frameH = modalImageFrame.clientHeight;
+        if (frameW === 0 || frameH === 0) return;
+
+        const padX = window.innerWidth < 768 ? 0.95 : 0.88;
+        const padH = window.innerWidth < 768 ? 0.94 : 0.92;
+
+        const maxW = Math.max(80, frameW * padX);
+        const maxH = Math.max(80, frameH * padH);
+
+        const imgRatio = modalImg.naturalWidth / modalImg.naturalHeight;
+        const boxRatio = maxW / maxH;
+
+        if (imgRatio > boxRatio) {
+            baseWidth = Math.min(modalImg.naturalWidth, maxW);
+            baseHeight = baseWidth / imgRatio;
+        } else {
+            baseHeight = Math.min(modalImg.naturalHeight, maxH);
+            baseWidth = baseHeight * imgRatio;
+        }
+    }
+
+    function applyZoom(animate = false) {
+        if (!modalImg || !modalImageFrame) return;
+
+        if (baseWidth === 0 || baseHeight === 0) {
+            calculateBaseDimensions();
+        }
+
+        if (zoomScale <= 1) {
+            zoomScale = 1;
+            zoomTranslateX = 0;
+            zoomTranslateY = 0;
+            modalImg.style.cursor = "zoom-in";
+            modalImg.style.maxWidth = "88vw";
+            modalImg.style.maxHeight = "calc(100vh - 145px)";
+            if (baseWidth > 0 && baseHeight > 0) {
+                modalImg.style.width = `${Math.round(baseWidth)}px`;
+                modalImg.style.height = `${Math.round(baseHeight)}px`;
+            } else {
+                modalImg.style.width = "auto";
+                modalImg.style.height = "auto";
+            }
+            modalImg.style.transition = animate ? "width 0.22s cubic-bezier(0.16, 1, 0.3, 1), height 0.22s cubic-bezier(0.16, 1, 0.3, 1), transform 0.22s cubic-bezier(0.16, 1, 0.3, 1)" : "none";
+            modalImg.style.transform = "translate3d(0px, 0px, 0px)";
+        } else {
+            const frameW = modalImageFrame.clientWidth;
+            const frameH = modalImageFrame.clientHeight;
+
+            const currentW = Math.round(baseWidth * zoomScale);
+            const currentH = Math.round(baseHeight * zoomScale);
+
+            const maxX = Math.max(0, (currentW - frameW) / 2 + 40);
+            const maxY = Math.max(0, (currentH - frameH) / 2 + 40);
+
+            zoomTranslateX = Math.max(-maxX, Math.min(maxX, zoomTranslateX));
+            zoomTranslateY = Math.max(-maxY, Math.min(maxY, zoomTranslateY));
+
+            modalImg.style.cursor = isDragging ? "grabbing" : "grab";
+            modalImg.style.maxWidth = "none";
+            modalImg.style.maxHeight = "none";
+            modalImg.style.width = `${currentW}px`;
+            modalImg.style.height = `${currentH}px`;
+            modalImg.style.transition = animate ? "width 0.22s cubic-bezier(0.16, 1, 0.3, 1), height 0.22s cubic-bezier(0.16, 1, 0.3, 1), transform 0.22s cubic-bezier(0.16, 1, 0.3, 1)" : "none";
+            modalImg.style.transform = `translate3d(${Math.round(zoomTranslateX)}px, ${Math.round(zoomTranslateY)}px, 0px)`;
+        }
+
+        if (modalZoomLevel) {
+            modalZoomLevel.textContent = `${Math.round(zoomScale * 100)}%`;
+        }
+    }
+
+    function applyPanOnly() {
+        if (!modalImg || !modalImageFrame || zoomScale <= 1) return;
+        const frameW = modalImageFrame.clientWidth;
+        const frameH = modalImageFrame.clientHeight;
+        const currentW = Math.round(baseWidth * zoomScale);
+        const currentH = Math.round(baseHeight * zoomScale);
+
+        const maxX = Math.max(0, (currentW - frameW) / 2 + 40);
+        const maxY = Math.max(0, (currentH - frameH) / 2 + 40);
+
+        zoomTranslateX = Math.max(-maxX, Math.min(maxX, zoomTranslateX));
+        zoomTranslateY = Math.max(-maxY, Math.min(maxY, zoomTranslateY));
+
+        modalImg.style.transition = "none";
+        modalImg.style.transform = `translate3d(${Math.round(zoomTranslateX)}px, ${Math.round(zoomTranslateY)}px, 0px)`;
+    }
+
+    function resetLightboxZoom(animate = true) {
         zoomScale = 1;
         zoomTranslateX = 0;
         zoomTranslateY = 0;
         isDragging = false;
-        if (modalImg) {
-            modalImg.style.transition = "transform 0.2s ease-out";
-            modalImg.style.transform = "translate3d(0px, 0px, 0px) scale(1)";
-            modalImg.style.cursor = "zoom-in";
-        }
+        applyZoom(animate);
     }
 
-    function updateLightboxTransform(animate = false) {
-        if (!modalImg) return;
-
-        if (zoomScale < 1) zoomScale = 1;
-        if (zoomScale > 4) zoomScale = 4;
-
+    function setZoom(newScale, animate = true) {
+        const prevScale = zoomScale;
+        zoomScale = Math.min(Math.max(newScale, 1), 5);
         if (zoomScale === 1) {
             zoomTranslateX = 0;
             zoomTranslateY = 0;
-            modalImg.style.cursor = "zoom-in";
-        } else {
-            modalImg.style.cursor = isDragging ? "grabbing" : "grab";
+        } else if (prevScale > 0 && zoomScale !== prevScale) {
+            const ratio = zoomScale / prevScale;
+            zoomTranslateX *= ratio;
+            zoomTranslateY *= ratio;
         }
-
-        modalImg.style.transition = animate ? "transform 0.2s ease-out" : "transform 0.05s ease-out";
-        modalImg.style.transform = `translate3d(${zoomTranslateX}px, ${zoomTranslateY}px, 0px) scale(${zoomScale})`;
+        applyZoom(animate);
     }
 
-    if (modalImg) {
-        const modalFrame = modalImg.closest(".modal-image-frame") || modalImg.parentElement;
+    // Botones de Zoom
+    if (modalZoomInBtn) {
+        modalZoomInBtn.addEventListener("click", (e) => {
+            e.stopPropagation();
+            setZoom(zoomScale + 0.6, true);
+        });
+    }
 
+    if (modalZoomOutBtn) {
+        modalZoomOutBtn.addEventListener("click", (e) => {
+            e.stopPropagation();
+            setZoom(zoomScale - 0.6, true);
+        });
+    }
+
+    if (modalZoomResetBtn) {
+        modalZoomResetBtn.addEventListener("click", (e) => {
+            e.stopPropagation();
+            resetLightboxZoom(true);
+        });
+    }
+
+    if (modalImageFrame && modalImg) {
         // Zoom con rueda del mouse (Desktop)
-        modalFrame.addEventListener("wheel", (e) => {
+        modalImageFrame.addEventListener("wheel", (e) => {
             e.preventDefault();
-            const delta = e.deltaY < 0 ? 0.25 : -0.25;
-            const newScale = Math.min(Math.max(zoomScale + delta, 1), 4);
-            if (newScale !== zoomScale) {
-                zoomScale = newScale;
-                updateLightboxTransform();
-            }
+            const delta = e.deltaY < 0 ? 0.35 : -0.35;
+            setZoom(zoomScale + delta, false);
         }, { passive: false });
 
-        // Doble clic para acercar o resetear (Desktop)
+        // Doble clic para alternar zoom (Desktop)
         modalImg.addEventListener("dblclick", (e) => {
             e.preventDefault();
+            e.stopPropagation();
             if (zoomScale > 1.1) {
-                resetLightboxZoom();
+                resetLightboxZoom(true);
             } else {
-                zoomScale = 2.5;
-                zoomTranslateX = 0;
-                zoomTranslateY = 0;
-                updateLightboxTransform(true);
+                setZoom(2.5, true);
             }
         });
 
-        // Arrastrar la imagen al estar ampliada (Desktop)
+        // Arrastre con Mouse (Desktop)
         modalImg.addEventListener("mousedown", (e) => {
             if (zoomScale > 1) {
                 e.preventDefault();
                 isDragging = true;
-                startX = e.clientX - zoomTranslateX;
-                startY = e.clientY - zoomTranslateY;
+                dragStartX = e.clientX - zoomTranslateX;
+                dragStartY = e.clientY - zoomTranslateY;
                 modalImg.style.cursor = "grabbing";
             }
         });
@@ -259,9 +406,9 @@ document.addEventListener("DOMContentLoaded", function () {
         window.addEventListener("mousemove", (e) => {
             if (isDragging && zoomScale > 1) {
                 e.preventDefault();
-                zoomTranslateX = e.clientX - startX;
-                zoomTranslateY = e.clientY - startY;
-                updateLightboxTransform();
+                zoomTranslateX = e.clientX - dragStartX;
+                zoomTranslateY = e.clientY - dragStartY;
+                applyPanOnly();
             }
         });
 
@@ -274,71 +421,72 @@ document.addEventListener("DOMContentLoaded", function () {
             }
         });
 
-        // Gestos Táctiles (Celular: Pinch-to-zoom, Doble toque y Arrastrar)
+        // Gestos Táctiles (Mobile: Pinch-to-zoom, Pan y Doble toque)
         function getTouchDistance(touches) {
             const dx = touches[0].clientX - touches[1].clientX;
             const dy = touches[0].clientY - touches[1].clientY;
             return Math.sqrt(dx * dx + dy * dy);
         }
 
-        modalFrame.addEventListener("touchstart", (e) => {
+        modalImageFrame.addEventListener("touchstart", (e) => {
             if (e.touches.length === 2) {
                 initialTouchDist = getTouchDistance(e.touches);
                 initialTouchScale = zoomScale;
             } else if (e.touches.length === 1) {
                 const now = Date.now();
-                if (now - lastTapTime < 300) {
+                if (now - lastTapTime < 320) {
+                    // Doble toque
                     e.preventDefault();
                     if (zoomScale > 1.1) {
-                        resetLightboxZoom();
+                        resetLightboxZoom(true);
                     } else {
-                        zoomScale = 2.5;
-                        zoomTranslateX = 0;
-                        zoomTranslateY = 0;
-                        updateLightboxTransform(true);
+                        setZoom(2.5, true);
                     }
                 } else if (zoomScale > 1) {
                     isDragging = true;
-                    startX = e.touches[0].clientX - zoomTranslateX;
-                    startY = e.touches[0].clientY - zoomTranslateY;
+                    dragStartX = e.touches[0].clientX - zoomTranslateX;
+                    dragStartY = e.touches[0].clientY - zoomTranslateY;
                 }
                 lastTapTime = now;
             }
         }, { passive: false });
 
-        modalFrame.addEventListener("touchmove", (e) => {
+        modalImageFrame.addEventListener("touchmove", (e) => {
             if (e.touches.length === 2) {
                 e.preventDefault();
                 const dist = getTouchDistance(e.touches);
                 if (initialTouchDist > 0) {
                     const factor = dist / initialTouchDist;
-                    zoomScale = Math.min(Math.max(initialTouchScale * factor, 1), 4);
-                    updateLightboxTransform();
+                    setZoom(initialTouchScale * factor, false);
                 }
             } else if (e.touches.length === 1 && isDragging && zoomScale > 1) {
                 e.preventDefault();
-                zoomTranslateX = e.touches[0].clientX - startX;
-                zoomTranslateY = e.touches[0].clientY - startY;
-                updateLightboxTransform();
+                zoomTranslateX = e.touches[0].clientX - dragStartX;
+                zoomTranslateY = e.touches[0].clientY - dragStartY;
+                applyPanOnly();
             }
         }, { passive: false });
 
-        modalFrame.addEventListener("touchend", (e) => {
+        modalImageFrame.addEventListener("touchend", (e) => {
             if (e.touches.length < 2) {
                 initialTouchDist = 0;
             }
             if (e.touches.length === 0) {
                 isDragging = false;
                 if (zoomScale <= 1) {
-                    resetLightboxZoom();
+                    resetLightboxZoom(false);
                 }
             }
         });
     }
 
-    const modalPrevBtn = document.getElementById("modal-prev-btn");
-    const modalNextBtn = document.getElementById("modal-next-btn");
-    const modalCounter = document.getElementById("modal-counter");
+    // Reajuste en redimensionado de ventana
+    window.addEventListener("resize", () => {
+        if (artModal && artModal.classList.contains("active")) {
+            calculateBaseDimensions();
+            applyZoom(false);
+        }
+    });
 
     function updateModalCounter() {
         if (!modalCounter) return;
@@ -397,7 +545,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
     function openModal(imgSrc, title, tech) {
         if (!artModal || !modalImg) return;
-        resetLightboxZoom();
         modalImg.src = imgSrc;
         modalImg.alt = title || "Retrato a lápiz por Alexis";
 
@@ -415,12 +562,23 @@ document.addEventListener("DOMContentLoaded", function () {
         artModal.setAttribute("aria-hidden", "false");
         document.body.classList.add("no-scroll");
 
+        const onImgReady = () => {
+            calculateBaseDimensions();
+            resetLightboxZoom(false);
+        };
+
+        if (modalImg.complete && modalImg.naturalWidth) {
+            requestAnimationFrame(onImgReady);
+        } else {
+            modalImg.onload = onImgReady;
+        }
+
         if (modalCloseBtn) modalCloseBtn.focus();
     }
 
     function closeModal() {
         if (!artModal) return;
-        resetLightboxZoom();
+        resetLightboxZoom(false);
         currentActiveIndex = -1;
         artModal.classList.remove("active");
         artModal.setAttribute("aria-hidden", "true");
@@ -438,39 +596,42 @@ document.addEventListener("DOMContentLoaded", function () {
                 showNextArtwork();
             } else if (e.key === "ArrowLeft") {
                 showPrevArtwork();
+            } else if (e.key === "+" || e.key === "=") {
+                setZoom(zoomScale + 0.5, true);
+            } else if (e.key === "-" || e.key === "_") {
+                setZoom(zoomScale - 0.5, true);
+            } else if (e.key === "0") {
+                resetLightboxZoom(true);
             }
         }
     });
 
-    // Soporte para gestos táctiles (Swipe)
+    // Soporte para gestos táctiles de cambio de obra (Swipe) cuando zoomScale === 1
     let touchStartX = 0;
     let touchEndX = 0;
 
-    if (artModal) {
-        const modalFrame = artModal.querySelector(".modal-image-frame");
-        if (modalFrame) {
-            modalFrame.addEventListener("touchstart", (e) => {
-                if (zoomScale === 1 && e.touches.length === 1) {
-                    touchStartX = e.touches[0].clientX;
-                }
-            }, { passive: true });
+    if (modalImageFrame) {
+        modalImageFrame.addEventListener("touchstart", (e) => {
+            if (zoomScale === 1 && e.touches.length === 1) {
+                touchStartX = e.touches[0].clientX;
+            }
+        }, { passive: true });
 
-            modalFrame.addEventListener("touchend", (e) => {
-                if (zoomScale === 1 && touchStartX > 0) {
-                    touchEndX = e.changedTouches[0].clientX;
-                    const diffX = touchStartX - touchEndX;
-                    const threshold = 55;
-                    if (Math.abs(diffX) > threshold) {
-                        if (diffX > 0) {
-                            showNextArtwork();
-                        } else {
-                            showPrevArtwork();
-                        }
+        modalImageFrame.addEventListener("touchend", (e) => {
+            if (zoomScale === 1 && touchStartX > 0) {
+                touchEndX = e.changedTouches[0].clientX;
+                const diffX = touchStartX - touchEndX;
+                const threshold = 55;
+                if (Math.abs(diffX) > threshold) {
+                    if (diffX > 0) {
+                        showNextArtwork();
+                    } else {
+                        showPrevArtwork();
                     }
-                    touchStartX = 0;
                 }
-            }, { passive: true });
-        }
+                touchStartX = 0;
+            }
+        }, { passive: true });
     }
 
     // ----------------------------------------------------------------------

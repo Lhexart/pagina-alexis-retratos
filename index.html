@@ -132,6 +132,16 @@
                 <div id="dynamic-gallery" class="dynamic-gallery-grid">
                     <!-- Renderizado dinámico desde script.js & works-data.js -->
                 </div>
+
+                <!-- Control Progresivo: Ver más obras -->
+                <div id="gallery-load-more-container" class="gallery-load-more-container">
+                    <button id="load-more-btn" class="gallery-load-more-btn" type="button" aria-label="Cargar más obras de la galería">
+                        <span>Ver más obras</span>
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <polyline points="6 9 12 15 18 9"></polyline>
+                        </svg>
+                    </button>
+                </div>
             </div>
         </section>
 
@@ -211,9 +221,9 @@
 
                     <div class="materials-visual">
                         <div class="macro-image-wrapper">
-                            <img src="assets/images/proceso/57.jpg" alt="Detalle macro del trazo a lápiz en proceso" loading="lazy">
+                            <img src="assets/images/proceso/portada.jpg" alt="Detalle del trazo a lápiz y textura en proceso" loading="lazy">
                             <div class="macro-caption">
-                                <span>Fotografía Macro: Textura del Grafito sobre Papel</span>
+                                <span>Fotografía en Taller: Textura del Grafito sobre Papel</span>
                             </div>
                         </div>
                     </div>
@@ -276,21 +286,29 @@
             </div>
         </section>
 
-        <!-- SECCIÓN 7: HABLEMOS DE TU RETRATO (CIERRE Y UNICO LLAMADO A LA ACCIÓN) -->
+        <!-- SECCIÓN 7: HABLEMOS DE TU RETRATO (CIERRE Y CONTACTO) -->
         <section id="contacto" class="cta-section">
             <div class="container">
                 <div class="cta-box">
                     <span class="cta-subtitle">Atención Personalizada</span>
                     <h2 class="cta-title">Hablemos de tu retrato</h2>
                     <p class="cta-description">
-                        ¿Tenés una fotografía especial en mente? Escribime directamente por WhatsApp para consultar dudas, tiempos de realización o solicitar presupuesto sin compromiso.
+                        ¿Tenés una fotografía especial en mente? Escribime directamente por WhatsApp o correo electrónico para consultar dudas, tiempos de realización o solicitar presupuesto sin compromiso.
                     </p>
                     <div class="cta-action">
-                        <a href="https://wa.me/?text=Hola%20Alexis,%20estoy%20viendo%20tu%20web%20y%20me%20gustar%C3%ADa%20consultar%20presupuesto%20para%20un%20retrato." target="_blank" rel="noopener" class="btn-whatsapp-large">
-                            <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                        <a href="https://wa.me/?text=Hola%20Alexis,%20estoy%20viendo%20tu%20web%20y%20me%20gustar%C3%ADa%20consultar%20presupuesto%20para%20un%20retrato." target="_blank" rel="noopener" class="btn-whatsapp-large" aria-label="Escribir a Alexis por WhatsApp">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                                 <path d="M12.012 2C6.486 2 2 6.479 2 12.006c0 1.9.53 3.666 1.452 5.176l-1.08 3.944 4.04-1.06a9.96 9.96 0 005.6 1.692h.005c5.525 0 10.011-4.478 10.011-10.005C22.028 6.479 17.537 2 12.012 2zm5.836 14.2c-.244.686-1.42 1.309-1.96 1.365-.494.052-1.139.076-3.669-.971-3.238-1.34-5.322-4.63-5.485-4.848-.16-.217-1.31-1.745-1.31-3.328 0-1.583.829-2.361 1.124-2.684.294-.323.644-.404.86-.404.215 0 .43.004.618.012.2.008.468-.077.732.557.27.649.92 2.247 1.002 2.41.08.163.134.354.026.57-.107.215-.16.35-.316.536-.156.185-.327.414-.467.556-.156.157-.319.327-.137.64.182.312.809 1.335 1.737 2.162 1.194 1.064 2.2 1.394 2.512 1.549.313.155.496.134.68-.078.186-.213.797-.93 1.01-1.25.216-.322.433-.27.728-.161.294.108 1.867.88 2.188 1.04.321.161.536.24.616.376.08.136.08.791-.164 1.477z"/>
                             </svg>
-                            <span>Escribir a Alexis por WhatsApp</span>
+                            <span>Escribir por WhatsApp</span>
+                        </a>
+                        <!-- CONTACTO POR EMAIL: Reemplazar TU_EMAIL_AQUI con tu dirección de correo real -->
+                        <a href="mailto:TU_EMAIL_AQUI?subject=Consulta%20sobre%20una%20obra%20%E2%80%94%20Alexis&body=Hola%20Alexis,%0D%0A%0D%0AVi%20tu%20trabajo%20en%20tu%20p%C3%A1gina%20web%20y%20quer%C3%ADa%20hacerte%20una%20consulta.%0D%0A%0D%0AGracias." class="btn-email-large" aria-label="Enviar un correo electrónico a Alexis">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                <rect width="20" height="16" x="2" y="4" rx="2"></rect>
+                                <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path>
+                            </svg>
+                            <span>Enviar un Correo</span>
                         </a>
                     </div>
                 </div>
@@ -310,6 +328,8 @@
                 <a href="#obras">Obras</a>
                 <a href="#encargo">Encargos</a>
                 <a href="#sobre-mi">Sobre mí</a>
+                <!-- EMAIL DISCRETO EN FOOTER: Reemplazar TU_EMAIL_AQUI con tu dirección de correo real -->
+                <a href="mailto:TU_EMAIL_AQUI?subject=Consulta%20sobre%20una%20obra%20%E2%80%94%20Alexis&body=Hola%20Alexis,%0D%0A%0D%0AVi%20tu%20trabajo%20en%20tu%20p%C3%A1gina%20web%20y%20quer%C3%ADa%20hacerte%20una%20consulta.%0D%0A%0D%0AGracias." aria-label="Enviar correo electrónico a Alexis">Email</a>
             </div>
             <div class="footer-copy">
                 <p>&copy; Alexis - Retratos a Lápiz. Todos los derechos reservados.</p>
@@ -317,39 +337,68 @@
         </div>
     </footer>
 
-    <!-- VISOR LIGHTBOX DE PANTALLA COMPLETA PARA LA GALERÍA -->
+    <!-- VISOR LIGHTBOX DE PANTALLA COMPLETA PARA LA GALERÍA (SALA DE EXHIBICIÓN) -->
     <div id="art-modal" class="art-modal" aria-hidden="true" role="dialog" aria-modal="true" aria-label="Visor de Obra en Alta Definición">
         <div class="modal-backdrop"></div>
-        <button class="modal-close-btn" aria-label="Cerrar visor">&times;</button>
         
-        <!-- Flechas de navegación para Desktop/Tablet -->
-        <button class="modal-nav-btn prev-btn" aria-label="Obra anterior" id="modal-prev-btn">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <line x1="19" y1="12" x2="5" y2="12"></line>
-                <polyline points="12 19 5 12 12 5"></polyline>
+        <!-- Barra superior discreta: Contador, Controles de Zoom y Cerrar -->
+        <div class="modal-top-bar">
+            <div class="modal-counter-badge" id="modal-counter">00 / 00</div>
+            
+            <div class="modal-zoom-controls">
+                <button type="button" class="modal-ctrl-btn" id="modal-zoom-out-btn" aria-label="Alejar imagen" title="Alejar (-)">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <circle cx="11" cy="11" r="8"></circle>
+                        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                        <line x1="8" y1="11" x2="14" y2="11"></line>
+                    </svg>
+                </button>
+                <button type="button" class="modal-ctrl-btn" id="modal-zoom-reset-btn" aria-label="Restablecer tamaño original" title="Restablecer tamaño (0)">
+                    <span class="zoom-level-text" id="modal-zoom-level">100%</span>
+                </button>
+                <button type="button" class="modal-ctrl-btn" id="modal-zoom-in-btn" aria-label="Acercar imagen" title="Acercar (+)">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <circle cx="11" cy="11" r="8"></circle>
+                        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                        <line x1="11" y1="8" x2="11" y2="14"></line>
+                        <line x1="8" y1="11" x2="14" y2="11"></line>
+                    </svg>
+                </button>
+            </div>
+
+            <button class="modal-close-btn" aria-label="Cerrar visor (Escape)">&times;</button>
+        </div>
+        
+        <!-- Flechas de navegación laterales alejadas de la obra -->
+        <button class="modal-nav-btn prev-btn" aria-label="Obra anterior (Flecha izquierda)" id="modal-prev-btn">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <polyline points="15 18 9 12 15 6"></polyline>
             </svg>
         </button>
-        <button class="modal-nav-btn next-btn" aria-label="Obra siguiente" id="modal-next-btn">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <line x1="5" y1="12" x2="19" y2="12"></line>
-                <polyline points="12 5 19 12 12 19"></polyline>
+        <button class="modal-nav-btn next-btn" aria-label="Obra siguiente (Flecha derecha)" id="modal-next-btn">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <polyline points="9 18 15 12 9 6"></polyline>
             </svg>
         </button>
 
-        <div class="modal-content">
-            <div class="modal-image-frame">
-                <img id="modal-img" src="" alt="Vista ampliada de obra">
+        <!-- Escenario de contemplación: Obra protagonista + Ficha técnica de museo -->
+        <div class="modal-stage">
+            <div class="modal-image-frame" id="modal-image-frame">
+                <img id="modal-img" src="" alt="Vista de obra a lápiz por Alexis">
             </div>
-            <div class="modal-sidebar">
-                <div class="modal-sidebar-header">
-                    <span class="modal-badge">SALA DE EXHIBICIÓN</span>
-                    <span class="modal-counter" id="modal-counter">00 / 00</span>
+            
+            <!-- Ficha técnica de museo (secundaria y elegante) -->
+            <div class="modal-museum-caption">
+                <div class="caption-info">
+                    <h3 id="modal-title" class="caption-title">Título de la Obra</h3>
+                    <p id="modal-tech" class="caption-tech">Técnica y materiales</p>
                 </div>
-                <h3 id="modal-title" class="modal-title">Título de la Obra</h3>
-                <p id="modal-tech" class="modal-tech">Técnica y materiales</p>
-                <div class="modal-cta-wrapper">
-                    <a id="modal-wa-btn" href="#" target="_blank" rel="noopener" class="btn-primary">
-                        <span>Consultar por un retrato similar</span>
+                <div class="caption-action">
+                    <a id="modal-wa-btn" href="#" target="_blank" rel="noopener" class="caption-wa-link" aria-label="Consultar por un encargo similar en WhatsApp">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                            <path d="M12.012 2C6.486 2 2 6.479 2 12.006c0 1.9.53 3.666 1.452 5.176l-1.08 3.944 4.04-1.06a9.96 9.96 0 005.6 1.692h.005c5.525 0 10.011-4.478 10.011-10.005C22.028 6.479 17.537 2 12.012 2zm5.836 14.2c-.244.686-1.42 1.309-1.96 1.365-.494.052-1.139.076-3.669-.971-3.238-1.34-5.322-4.63-5.485-4.848-.16-.217-1.31-1.745-1.31-3.328 0-1.583.829-2.361 1.124-2.684.294-.323.644-.404.86-.404.215 0 .43.004.618.012.2.008.468-.077.732.557.27.649.92 2.247 1.002 2.41.08.163.134.354.026.57-.107.215-.16.35-.316.536-.156.185-.327.414-.467.556-.156.157-.319.327-.137.64.182.312.809 1.335 1.737 2.162 1.194 1.064 2.2 1.394 2.512 1.549.313.155.496.134.68-.078.186-.213.797-.93 1.01-1.25.216-.322.433-.27.728-.161.294.108 1.867.88 2.188 1.04.321.161.536.24.616.376.08.136.08.791-.164 1.477z"/>
+                        </svg>
+                        <span>Consultar encargo similar</span>
                     </a>
                 </div>
             </div>
