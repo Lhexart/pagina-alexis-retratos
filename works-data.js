@@ -78,7 +78,7 @@ const WORKS_DATA = [
         title: "Contraste Profundo N° 70",
         category: "personas",
         categoryLabel: "Personas",
-        image: "assets/images/personas/102.jpg",
+        image: "assets/images/personas/107.jpg",
         technique: "Carboncillo y esfumado",
         format: "Formato A3",
         featured: false
@@ -121,7 +121,7 @@ const WORKS_DATA = [
         title: "Mirada Animal N° 65",
         category: "mascotas",
         categoryLabel: "Mascotas",
-        image: "assets/images/mascotas/(19).png",
+        image: "assets/images/mascotas/65.jpg",
         technique: "Papel Canson 300g",
         format: "Formato A4",
         featured: false
@@ -162,7 +162,7 @@ const WORKS_DATA = [
         title: "Estudio de Sombras N° 69",
         category: "cuadros",
         categoryLabel: "Cuadros & Obras",
-        image: "assets/images/personas/103.jpg",
+        image: "assets/images/personas/70.jpg",
         technique: "Grafito puro y carboncillo comprimido",
         format: "Formato A2",
         featured: true

@@ -39,12 +39,94 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     // ----------------------------------------------------------------------
-    // 1. MICRO-TILT EDITORIAL EN HERO (CON INERCIA Y PAUSA DE FLOTACIÓN)
+    // 1. SLIDESHOW AUTOMÁTICO EN HERO + MICRO-TILT EDITORIAL
     // ----------------------------------------------------------------------
+
+    // Los mejores dibujos para el slideshow del hero
+    const HERO_SLIDES = [
+        { src: "assets/images/hero/nro38.1.jpg",    title: "Retrato Hiperrealista de Rostro",    tech: "Grafito & Carboncillo sobre papel Canson 300g — Formato A3" },
+        { src: "assets/images/hero/nro89.1.jpg",     title: "Retrato de Lionel Messi",            tech: "Grafito graduado (2H a 8B) — Formato A3" },
+        { src: "assets/images/personas/nro56.jpg",   title: "Retrato Hiperrealista de Rostro",    tech: "Grafito & Carboncillo sobre papel Canson 300g — Formato A3" },
+        { src: "assets/images/hero/nro89.jpg",       title: "Retrato Individual",                 tech: "Grafito sobre papel Canson 300g — Formato A4" },
+        { src: "assets/images/hero/Nro3.1.jpg",      title: "Retrato Familiar / Pareja",          tech: "Formato A3 en papel libre de ácido" },
+        { src: "assets/images/personas/(21).jpg",    title: "Mirada en Sombra",                   tech: "Estudio de luces y claroscuro en carboncillo — Formato A4" },
+        { src: "assets/images/personas/nro91.1.jpg", title: "Expresión Realista",                 tech: "Papel de algodón de textura fina — Formato A3" },
+    ];
+
     const heroFrame = document.getElementById("hero-artwork-frame");
-    const heroImg = document.getElementById("hero-interactive-img");
+    const heroImg   = document.getElementById("hero-interactive-img");
 
     if (heroFrame && heroImg) {
+        let currentSlide = 0;
+        let slideshowTimer = null;
+        let isTransitioning = false;
+
+        // Imagen de fondo (sale) — se crea una sola vez
+        const heroBgImg = document.createElement("img");
+        heroBgImg.className = "hero-bg-img";
+        heroBgImg.alt = "";
+        heroBgImg.setAttribute("aria-hidden", "true");
+        heroBgImg.src = HERO_SLIDES[0].src;
+        heroFrame.insertBefore(heroBgImg, heroImg);
+
+        function goToSlide(index) {
+            if (isTransitioning) return;
+            isTransitioning = true;
+
+            const slide = HERO_SLIDES[index];
+
+            // La bg muestra la imagen ACTUAL (la que va a salir)
+            heroBgImg.src = heroImg.src;
+            heroBgImg.style.opacity = "1";
+
+            // La imagen frontal cambia al nuevo slide y hace fade-in
+            heroImg.style.opacity = "0";
+            heroImg.src = slide.src;
+
+            heroImg.onload = function () {
+                // Pequeño delay para que el navegador pinte la nueva imagen antes del fade
+                requestAnimationFrame(() => {
+                    heroImg.style.opacity = "1";
+                    // La bg desaparece sutilmente detrás
+                    setTimeout(() => {
+                        heroBgImg.style.opacity = "0";
+                        isTransitioning = false;
+                    }, 200);
+                });
+            };
+
+            // Actualizar el click del lightbox para abrir el slide actual
+            heroFrame.onclick = function () {
+                openModal(slide.src, slide.title, slide.tech);
+            };
+        }
+
+        function nextSlide() {
+            currentSlide = (currentSlide + 1) % HERO_SLIDES.length;
+            goToSlide(currentSlide);
+        }
+
+        function startSlideshow() {
+            slideshowTimer = setInterval(nextSlide, 4500);
+        }
+
+        function stopSlideshow() {
+            clearInterval(slideshowTimer);
+        }
+
+        // Pausar al hacer hover (para que el usuario pueda apreciar la imagen)
+        heroFrame.addEventListener("mouseenter", stopSlideshow);
+        heroFrame.addEventListener("mouseleave", function () {
+            heroFrame.style.transition = "transform 0.6s cubic-bezier(0.16, 1, 0.3, 1)";
+            heroFrame.style.transform = "perspective(1000px) rotateX(0deg) rotateY(0deg) translateY(0px)";
+            heroImg.style.transform = "scale(1) translate(0px, 0px)";
+            setTimeout(() => {
+                if (heroFrame) heroFrame.style.animationPlayState = "running";
+            }, 600);
+            startSlideshow();
+        });
+
+        // Micro-tilt al mover el mouse
         heroFrame.addEventListener("mousemove", function (e) {
             const rect = heroFrame.getBoundingClientRect();
             const x = e.clientX - rect.left;
@@ -63,18 +145,13 @@ document.addEventListener("DOMContentLoaded", function () {
             heroImg.style.transform = `scale(1.02) translate(${moveX}px, ${moveY}px)`;
         });
 
-        heroFrame.addEventListener("mouseleave", function () {
-            heroFrame.style.transition = "transform 0.6s cubic-bezier(0.16, 1, 0.3, 1)";
-            heroFrame.style.transform = "perspective(1000px) rotateX(0deg) rotateY(0deg) translateY(0px)";
-            heroImg.style.transform = "scale(1) translate(0px, 0px)";
-            setTimeout(() => {
-                if (heroFrame) heroFrame.style.animationPlayState = "running";
-            }, 600);
+        // Click inicial abre el primer slide
+        heroFrame.addEventListener("click", function () {
+            openModal(HERO_SLIDES[currentSlide].src, HERO_SLIDES[currentSlide].title, HERO_SLIDES[currentSlide].tech);
         });
 
-        heroFrame.addEventListener("click", function () {
-            openModal("assets/images/hero/nro38.1.jpg", "Retrato Hiperrealista de Rostro", "Grafito & Carboncillo sobre papel Canson 300g — Formato A3");
-        });
+        // Arrancar el slideshow
+        startSlideshow();
     }
 
     // ----------------------------------------------------------------------
