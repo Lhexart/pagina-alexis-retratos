@@ -44,7 +44,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Los mejores dibujos para el slideshow del hero
     const HERO_SLIDES = [
-        { src: "assets/images/hero/nro38.1.jpg",    title: "Retrato Hiperrealista de Rostro",    tech: "Grafito & Carboncillo sobre papel Canson 300g — Formato A3" },
+        { src: "assets/images/personas/nro38.1.jpg", title: "Retrato Hiperrealista de Rostro",    tech: "Grafito & Carboncillo sobre papel Canson 300g — Formato A3" },
         { src: "assets/images/hero/nro89.1.jpg",     title: "Retrato de Lionel Messi",            tech: "Grafito graduado (2H a 8B) — Formato A3" },
         { src: "assets/images/personas/nro56.jpg",   title: "Retrato Hiperrealista de Rostro",    tech: "Grafito & Carboncillo sobre papel Canson 300g — Formato A3" },
         { src: "assets/images/hero/nro89.jpg",       title: "Retrato Individual",                 tech: "Grafito sobre papel Canson 300g — Formato A4" },

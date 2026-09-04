@@ -65,10 +65,10 @@ const WORKS_DATA = [
     },
     {
         id: "persona-06",
-        title: "Estudio de Expresión N° 107",
+        title: "Retrato Hiperrealista a Mano Alzada",
         category: "personas",
         categoryLabel: "Personas",
-        image: "assets/images/personas/107.jpg",
+        image: "assets/images/personas/nro38.1.jpg",
         technique: "Grafito fino alzada",
         format: "Formato A4",
         featured: false
@@ -105,28 +105,7 @@ const WORKS_DATA = [
     },
 
     // --- CATEGORÍA: MASCOTAS ---
-   
     {
-        id: "mascota-04",
-        title: "Detalle de Pelaje N° 64",
-        category: "mascotas",
-        categoryLabel: "Mascotas",
-        image: "assets/images/mascotas/64.jpg",
-        technique: "Grafito 4B y 6B",
-        format: "Formato A4",
-        featured: false
-    }, 
-    {
-        id: "mascota-05",
-        title: "Mirada Animal N° 65",
-        category: "mascotas",
-        categoryLabel: "Mascotas",
-        image: "assets/images/mascotas/65.jpg",
-        technique: "Papel Canson 300g",
-        format: "Formato A4",
-        featured: false
-    },
-     {
         id: "mascota-01",
         title: "Retrato de Mascota en Pelaje",
         category: "mascotas",
@@ -159,10 +138,10 @@ const WORKS_DATA = [
     // --- CATEGORÍA: CUADROS Y OBRAS ORIGINALES ---
     {
         id: "cuadro-01",
-        title: "Estudio de Sombras N° 69",
+        title: "Estudio de Sombras y Luces",
         category: "cuadros",
         categoryLabel: "Cuadros & Obras",
-        image: "assets/images/personas/69.jpg",
+        image: "assets/images/personas/58.jpg",
         technique: "Grafito puro y carboncillo comprimido",
         format: "Formato A2",
         featured: true
