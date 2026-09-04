@@ -675,32 +675,72 @@ section {
     }
 }
 
-.hero-bg-img {
+/* Transición Cinematográfica Continua para el Hero Slideshow */
+.hero-slide-layer {
     position: absolute;
-    inset: 0;
+    top: 0;
+    left: 0;
     width: 100%;
     height: 100%;
     object-fit: cover;
     filter: brightness(0.97) contrast(1.05);
-    opacity: 0;
-    transition: opacity 0.9s ease;
     pointer-events: none;
-    z-index: 0;
-}
-
-.hero-interactive-img {
-    position: relative;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    filter: brightness(0.97) contrast(1.05);
-    transition: transform 0.4s ease, filter 0.4s ease, opacity 0.9s ease;
+    will-change: transform, opacity;
     z-index: 1;
 }
 
-.hero-artwork-frame:hover .hero-interactive-img {
-    filter: brightness(1.02) contrast(1.06);
-    transform: scale(1.02);
+.hero-artwork-frame:hover .hero-slide-layer {
+    filter: brightness(1.01) contrast(1.06);
+}
+
+/* Estado Pre-Entrada: desplazada sutilmente a la derecha (45px) y opacidad 0 */
+.hero-slide-layer.prep-enter {
+    opacity: 0;
+    transform: translateX(45px);
+    transition: none !important;
+}
+
+/* Entrada Fluida: hacia 0px aumentando opacidad */
+.hero-slide-layer.is-entering {
+    opacity: 1;
+    transform: translateX(0px);
+    transition: transform 0.75s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.75s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Desplazamiento Lento Continuo durante el tiempo de contemplación */
+.hero-slide-layer.is-panning {
+    opacity: 1;
+    transform: translateX(-16px);
+    transition: transform 3.75s linear, opacity 0.4s ease;
+}
+
+/* Salida Suave: continua desplazándose a la izquierda (-65px) hasta desvanecerse */
+.hero-slide-layer.is-exiting {
+    opacity: 0;
+    transform: translateX(-65px);
+    transition: transform 1.05s cubic-bezier(0.25, 1, 0.5, 1), opacity 1.05s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Accesibilidad: Reducción de movimiento */
+@media (prefers-reduced-motion: reduce) {
+    .hero-slide-layer.prep-enter,
+    .hero-slide-layer.is-entering,
+    .hero-slide-layer.is-panning,
+    .hero-slide-layer.is-exiting {
+        transform: none !important;
+    }
+    .hero-slide-layer.prep-enter {
+        opacity: 0 !important;
+    }
+    .hero-slide-layer.is-entering,
+    .hero-slide-layer.is-panning {
+        opacity: 1 !important;
+        transition: opacity 0.75s ease !important;
+    }
+    .hero-slide-layer.is-exiting {
+        opacity: 0 !important;
+        transition: opacity 1.05s ease !important;
+    }
 }
 
 /* Indicador Discreto de Scroll */

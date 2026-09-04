@@ -61,41 +61,63 @@ document.addEventListener("DOMContentLoaded", function () {
         let slideshowTimer = null;
         let isTransitioning = false;
 
-        // Imagen de fondo (sale) — se crea una sola vez
+        // Configuración inicial de capas para la transición cinematográfica
+        heroImg.className = "hero-slide-layer is-panning";
+        
         const heroBgImg = document.createElement("img");
-        heroBgImg.className = "hero-bg-img";
+        heroBgImg.className = "hero-slide-layer prep-enter";
         heroBgImg.alt = "";
         heroBgImg.setAttribute("aria-hidden", "true");
-        heroBgImg.src = HERO_SLIDES[0].src;
         heroFrame.insertBefore(heroBgImg, heroImg);
+
+        const layers = [heroImg, heroBgImg];
+        let activeLayerIdx = 0;
+
+        // Precarga de imágenes para asegurar fluidez perfecta sin retardos
+        HERO_SLIDES.forEach(slide => {
+            const img = new Image();
+            img.src = slide.src;
+        });
 
         function goToSlide(index) {
             if (isTransitioning) return;
             isTransitioning = true;
 
             const slide = HERO_SLIDES[index];
+            const currentLayer = layers[activeLayerIdx];
+            activeLayerIdx = (activeLayerIdx + 1) % 2;
+            const nextLayer = layers[activeLayerIdx];
 
-            // La bg muestra la imagen ACTUAL (la que va a salir)
-            heroBgImg.src = heroImg.src;
-            heroBgImg.style.opacity = "1";
+            // 1. La imagen actual continúa desplazándose a la izquierda y pierde opacidad hasta desaparecer
+            currentLayer.className = "hero-slide-layer is-exiting";
 
-            // La imagen frontal cambia al nuevo slide y hace fade-in
-            heroImg.style.opacity = "0";
-            heroImg.src = slide.src;
+            // 2. La siguiente imagen se prepara desplazada a la derecha con opacidad baja
+            nextLayer.src = slide.src;
+            nextLayer.alt = slide.title || "Retrato a lápiz por Alexis";
+            nextLayer.className = "hero-slide-layer prep-enter";
 
-            heroImg.onload = function () {
-                // Pequeño delay para que el navegador pinte la nueva imagen antes del fade
-                requestAnimationFrame(() => {
-                    heroImg.style.opacity = "1";
-                    // La bg desaparece sutilmente detrás
-                    setTimeout(() => {
-                        heroBgImg.style.opacity = "0";
-                        isTransitioning = false;
-                    }, 200);
-                });
-            };
+            // Forzar renderizado previo para fijar el punto inicial
+            void nextLayer.offsetWidth;
 
-            // Actualizar el click del lightbox para abrir el slide actual
+            // 3. Entra desde la derecha acelerando suavemente hacia 0px y aumentando opacidad a 1
+            nextLayer.className = "hero-slide-layer is-entering";
+
+            // Al completar la entrada, pasa al desplazamiento continuo extremadamente sutil a la izquierda
+            setTimeout(() => {
+                if (nextLayer.classList.contains("is-entering")) {
+                    nextLayer.className = "hero-slide-layer is-panning";
+                }
+            }, 750);
+
+            // Reestablecer el estado de la capa saliente tras completar su salida
+            setTimeout(() => {
+                if (currentLayer.classList.contains("is-exiting")) {
+                    currentLayer.className = "hero-slide-layer prep-enter";
+                }
+                isTransitioning = false;
+            }, 1050);
+
+            // Actualizar el click del lightbox para la imagen actual
             heroFrame.onclick = function () {
                 openModal(slide.src, slide.title, slide.tech);
             };
@@ -107,26 +129,27 @@ document.addEventListener("DOMContentLoaded", function () {
         }
 
         function startSlideshow() {
-            slideshowTimer = setInterval(nextSlide, 4500);
+            if (!slideshowTimer) {
+                slideshowTimer = setInterval(nextSlide, 4500);
+            }
         }
 
         function stopSlideshow() {
-            clearInterval(slideshowTimer);
+            if (slideshowTimer) {
+                clearInterval(slideshowTimer);
+                slideshowTimer = null;
+            }
         }
 
-        // Pausar al hacer hover (para que el usuario pueda apreciar la imagen)
+        // Pausar al hacer hover para permitir contemplación
         heroFrame.addEventListener("mouseenter", stopSlideshow);
         heroFrame.addEventListener("mouseleave", function () {
             heroFrame.style.transition = "transform 0.6s cubic-bezier(0.16, 1, 0.3, 1)";
             heroFrame.style.transform = "perspective(1000px) rotateX(0deg) rotateY(0deg) translateY(0px)";
-            heroImg.style.transform = "scale(1) translate(0px, 0px)";
-            setTimeout(() => {
-                if (heroFrame) heroFrame.style.animationPlayState = "running";
-            }, 600);
             startSlideshow();
         });
 
-        // Micro-tilt al mover el mouse
+        // Micro-tilt al mover el mouse en el marco del hero
         heroFrame.addEventListener("mousemove", function (e) {
             const rect = heroFrame.getBoundingClientRect();
             const x = e.clientX - rect.left;
@@ -134,23 +157,19 @@ document.addEventListener("DOMContentLoaded", function () {
             const centerX = rect.width / 2;
             const centerY = rect.height / 2;
 
-            const moveX = ((x - centerX) / centerX) * 2.5;
-            const moveY = ((y - centerY) / centerY) * 2.5;
             const rotateX = ((centerY - y) / centerY) * 1.0;
             const rotateY = ((x - centerX) / centerX) * 1.0;
 
-            heroFrame.style.animationPlayState = "paused";
             heroFrame.style.transition = "transform 0.15s cubic-bezier(0.16, 1, 0.3, 1)";
             heroFrame.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-2px)`;
-            heroImg.style.transform = `scale(1.02) translate(${moveX}px, ${moveY}px)`;
         });
 
-        // Click inicial abre el primer slide
+        // Click inicial abre la obra activa en el modal
         heroFrame.addEventListener("click", function () {
             openModal(HERO_SLIDES[currentSlide].src, HERO_SLIDES[currentSlide].title, HERO_SLIDES[currentSlide].tech);
         });
 
-        // Arrancar el slideshow
+        // Iniciar el slideshow
         startSlideshow();
     }
 
