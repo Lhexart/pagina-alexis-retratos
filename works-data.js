@@ -68,7 +68,7 @@ const WORKS_DATA = [
         title: "Estudio de Expresión N° 107",
         category: "personas",
         categoryLabel: "Personas",
-        image: "assets/images/hero/Nro3.jpg",
+        image: "assets/images/personas/107.jpg",
         technique: "Grafito fino alzada",
         format: "Formato A4",
         featured: false
@@ -78,7 +78,7 @@ const WORKS_DATA = [
         title: "Contraste Profundo N° 70",
         category: "personas",
         categoryLabel: "Personas",
-        image: "assets/images/personas/107.jpg",
+        image: "assets/images/personas/70.jpg",
         technique: "Carboncillo y esfumado",
         format: "Formato A3",
         featured: false
@@ -88,7 +88,7 @@ const WORKS_DATA = [
         title: "Retrato en Grafito N° 71",
         category: "personas",
         categoryLabel: "Personas",
-        image: "assets/images/hero/diego.jpg",
+        image: "assets/images/personas/71.jpg",
         technique: "Grafito puro sobre papel de 300g",
         format: "Formato A4",
         featured: false
@@ -162,7 +162,7 @@ const WORKS_DATA = [
         title: "Estudio de Sombras N° 69",
         category: "cuadros",
         categoryLabel: "Cuadros & Obras",
-        image: "assets/images/personas/70.jpg",
+        image: "assets/images/personas/69.jpg",
         technique: "Grafito puro y carboncillo comprimido",
         format: "Formato A2",
         featured: true
