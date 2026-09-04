@@ -44,13 +44,14 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Los mejores dibujos para el slideshow del hero
     const HERO_SLIDES = [
-        { src: "assets/images/personas/nro38.1.jpg", title: "Retrato Hiperrealista de Rostro",    tech: "Grafito & Carboncillo sobre papel Canson 300g — Formato A3" },
-        { src: "assets/images/hero/nro89.1.jpg",     title: "Retrato de Lionel Messi",            tech: "Grafito graduado (2H a 8B) — Formato A3" },
-        { src: "assets/images/personas/nro56.jpg",   title: "Retrato Hiperrealista de Rostro",    tech: "Grafito & Carboncillo sobre papel Canson 300g — Formato A3" },
-        { src: "assets/images/hero/nro89.jpg",       title: "Retrato Individual",                 tech: "Grafito sobre papel Canson 300g — Formato A4" },
-        { src: "assets/images/hero/Nro3.1.jpg",      title: "Retrato Familiar / Pareja",          tech: "Formato A3 en papel libre de ácido" },
-        { src: "assets/images/personas/(21).jpg",    title: "Mirada en Sombra",                   tech: "Estudio de luces y claroscuro en carboncillo — Formato A4" },
-        { src: "assets/images/personas/nro91.1.jpg", title: "Expresión Realista",                 tech: "Papel de algodón de textura fina — Formato A3" },
+        { src: "assets/images/personas/nro38.1.jpg",           title: "Retrato Hiperrealista de Rostro",    tech: "Grafito & Carboncillo sobre papel Canson 300g — Formato A3" },
+        { src: "assets/images/hero/Messi Copa Malvinas (2026).jpg", title: "Lionel Messi — Copa y Malvinas", tech: "Grafito & Carboncillo sobre papel — Formato A3" },
+        { src: "assets/images/hero/nro89.1.jpg",             title: "Retrato de Lionel Messi",            tech: "Grafito graduado (2H a 8B) — Formato A3" },
+        { src: "assets/images/personas/nro56.jpg",           title: "Retrato Hiperrealista de Rostro",    tech: "Grafito & Carboncillo sobre papel Canson 300g — Formato A3" },
+        { src: "assets/images/hero/nro89.jpg",               title: "Retrato Individual",                 tech: "Grafito sobre papel Canson 300g — Formato A4" },
+        { src: "assets/images/hero/Nro3.1.jpg",              title: "Retrato Familiar / Pareja",          tech: "Formato A3 en papel libre de ácido" },
+        { src: "assets/images/personas/(21).jpg",            title: "Mirada en Sombra",                   tech: "Estudio de luces y claroscuro en carboncillo — Formato A4" },
+        { src: "assets/images/personas/nro91.1.jpg",         title: "Expresión Realista",                 tech: "Papel de algodón de textura fina — Formato A3" },
     ];
 
     const heroFrame = document.getElementById("hero-artwork-frame");
