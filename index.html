@@ -173,13 +173,13 @@
                     <div class="comparison-slider" id="before-after-slider">
                         <!-- Imagen de Fondo (Antes / Foto) -->
                         <div class="comparison-img-before">
-                            <img src="assets/images/personas/nro45.jpg" alt="Fotografía original de referencia" loading="lazy">
+                            <img id="comparison-before-img" src="assets/images/referencias/nro45.jpg" alt="Fotografía original de referencia" loading="lazy">
                             <span class="tag-label tag-before">Fotografía Original</span>
                         </div>
                         <!-- Imagen Superpuesta (Después / Dibujo) -->
                         <div class="comparison-img-after" id="slider-after-layer">
                             <div class="after-img-wrapper">
-                                <img src="assets/images/personas/nro45.jpg" alt="Retrato finalizado a lápiz por Alexis" loading="lazy">
+                                <img id="comparison-after-img" src="assets/images/personas/nro45.jpg" alt="Retrato finalizado a lápiz por Alexis" loading="lazy">
                                 <span class="tag-label tag-after">Retrato Finalizado a Lápiz</span>
                             </div>
                         </div>
@@ -194,6 +194,21 @@
                             </div>
                             <div class="handle-line"></div>
                         </div>
+                    </div>
+
+                    <!-- Navegación discreta para múltiples comparaciones -->
+                    <div class="comparison-nav" id="comparison-nav" style="display: none;">
+                        <button class="comparison-nav-btn prev" id="comparison-prev-btn" aria-label="Comparación anterior" title="Anterior">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="15 18 9 12 15 6"></polyline>
+                            </svg>
+                        </button>
+                        <div class="comparison-dots" id="comparison-dots"></div>
+                        <button class="comparison-nav-btn next" id="comparison-next-btn" aria-label="Siguiente comparación" title="Siguiente">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="9 18 15 12 9 6"></polyline>
+                            </svg>
+                        </button>
                     </div>
                 </div>
             </div>

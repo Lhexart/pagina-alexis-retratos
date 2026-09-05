@@ -844,11 +844,17 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     // ----------------------------------------------------------------------
-    // 6. COMPARADOR DESLIZANTE ANTES / DESPUÉS (SLIDER INTERACTIVO)
+    // 6. COMPARADOR DESLIZANTE ANTES / DESPUÉS (DINÁMICO & ESCALABLE)
     // ----------------------------------------------------------------------
     const beforeAfterSlider = document.getElementById("before-after-slider");
     const sliderAfterLayer = document.getElementById("slider-after-layer");
     const sliderHandle = document.getElementById("slider-handle");
+    const comparisonBeforeImg = document.getElementById("comparison-before-img");
+    const comparisonAfterImg = document.getElementById("comparison-after-img");
+    const comparisonNav = document.getElementById("comparison-nav");
+    const comparisonDots = document.getElementById("comparison-dots");
+    const comparisonPrevBtn = document.getElementById("comparison-prev-btn");
+    const comparisonNextBtn = document.getElementById("comparison-next-btn");
 
     if (beforeAfterSlider && sliderAfterLayer && sliderHandle) {
         let isResizing = false;
@@ -899,6 +905,128 @@ document.addEventListener("DOMContentLoaded", function () {
                 setSliderPosition(e.clientX);
             }
         });
+
+        // ------------------------------------------------------------------
+        // Detección Automática de Referencias desde WORKS_DATA
+        // ------------------------------------------------------------------
+        function checkImageExists(url) {
+            return new Promise((resolve) => {
+                const img = new Image();
+                img.onload = () => resolve(true);
+                img.onerror = () => resolve(false);
+                img.src = url;
+            });
+        }
+
+        let validComparisons = [];
+        let currentComparisonIndex = 0;
+
+        async function initDynamicBeforeAfter() {
+            if (typeof WORKS_DATA === "undefined" || !Array.isArray(WORKS_DATA)) return;
+
+            // Escanear obras de WORKS_DATA y asociar con assets/images/referencias/[mismo-archivo]
+            const candidates = WORKS_DATA.map((work) => {
+                const imgPath = work.image || "";
+                const filename = imgPath.substring(imgPath.lastIndexOf("/") + 1);
+                return {
+                    work,
+                    filename,
+                    refSrc: `assets/images/referencias/${filename}`,
+                    artworkSrc: imgPath
+                };
+            });
+
+            // Comprobar la existencia de cada archivo de referencia
+            const checkResults = await Promise.all(
+                candidates.map(async (c) => {
+                    if (!c.filename) return null;
+                    const exists = await checkImageExists(c.refSrc);
+                    if (exists) {
+                        return {
+                            title: c.work.title || "Retrato a Lápiz",
+                            refSrc: c.refSrc,
+                            artworkSrc: c.artworkSrc,
+                            altBefore: `Fotografía original de referencia - ${c.work.title || ""}`,
+                            altAfter: `Retrato finalizado a lápiz por Alexis - ${c.work.title || ""}`
+                        };
+                    }
+                    return null;
+                })
+            );
+
+            validComparisons = checkResults.filter(Boolean);
+
+            if (validComparisons.length > 0) {
+                renderComparison(0);
+                setupComparisonNav();
+            }
+        }
+
+        function renderComparison(index) {
+            if (!validComparisons[index]) return;
+            currentComparisonIndex = index;
+            const item = validComparisons[index];
+
+            // Transición suave (fade)
+            beforeAfterSlider.classList.add("is-switching");
+
+            setTimeout(() => {
+                if (comparisonBeforeImg) {
+                    comparisonBeforeImg.src = item.refSrc;
+                    comparisonBeforeImg.alt = item.altBefore;
+                }
+                if (comparisonAfterImg) {
+                    comparisonAfterImg.src = item.artworkSrc;
+                    comparisonAfterImg.alt = item.altAfter;
+                }
+
+                // Actualizar estado de dots
+                if (comparisonDots) {
+                    const dots = comparisonDots.querySelectorAll(".comparison-dot");
+                    dots.forEach((dot, idx) => {
+                        dot.classList.toggle("active", idx === index);
+                    });
+                }
+
+                beforeAfterSlider.classList.remove("is-switching");
+            }, 180);
+        }
+
+        function setupComparisonNav() {
+            if (!comparisonNav || !comparisonDots) return;
+
+            if (validComparisons.length <= 1) {
+                comparisonNav.style.display = "none";
+                return;
+            }
+
+            comparisonNav.style.display = "flex";
+            comparisonDots.innerHTML = "";
+
+            validComparisons.forEach((_, idx) => {
+                const dot = document.createElement("button");
+                dot.className = `comparison-dot ${idx === currentComparisonIndex ? "active" : ""}`;
+                dot.setAttribute("aria-label", `Ver comparación ${idx + 1}`);
+                dot.addEventListener("click", () => renderComparison(idx));
+                comparisonDots.appendChild(dot);
+            });
+
+            if (comparisonPrevBtn) {
+                comparisonPrevBtn.onclick = function () {
+                    const nextIdx = (currentComparisonIndex - 1 + validComparisons.length) % validComparisons.length;
+                    renderComparison(nextIdx);
+                };
+            }
+
+            if (comparisonNextBtn) {
+                comparisonNextBtn.onclick = function () {
+                    const nextIdx = (currentComparisonIndex + 1) % validComparisons.length;
+                    renderComparison(nextIdx);
+                };
+            }
+        }
+
+        initDynamicBeforeAfter();
     }
 
     // Inicializar Microinteracciones & Galería
