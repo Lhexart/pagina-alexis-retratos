@@ -39,12 +39,118 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     // ----------------------------------------------------------------------
-    // 1. MICRO-TILT EDITORIAL EN HERO (CON INERCIA Y PAUSA DE FLOTACIÓN)
+    // 1. SLIDESHOW AUTOMÁTICO EN HERO + MICRO-TILT EDITORIAL
     // ----------------------------------------------------------------------
+
+    // Los mejores dibujos para el slideshow del hero
+    const HERO_SLIDES = [
+        { src: "assets/images/personas/nro38.1.jpg",           title: "Retrato Hiperrealista de Rostro",    tech: "Grafito & Carboncillo sobre papel Canson 300g — Formato A3" },
+        { src: "assets/images/hero/Messi Copa Malvinas (2026).jpg", title: "Lionel Messi — Copa y Malvinas", tech: "Grafito & Carboncillo sobre papel — Formato A3" },
+        { src: "assets/images/hero/nro89.1.jpg",             title: "Retrato de Lionel Messi",            tech: "Grafito graduado (2H a 8B) — Formato A3" },
+        { src: "assets/images/personas/nro56.jpg",           title: "Retrato Hiperrealista de Rostro",    tech: "Grafito & Carboncillo sobre papel Canson 300g — Formato A3" },
+        { src: "assets/images/hero/nro89.jpg",               title: "Retrato Individual",                 tech: "Grafito sobre papel Canson 300g — Formato A4" },
+        { src: "assets/images/hero/Nro3.1.jpg",              title: "Retrato Familiar / Pareja",          tech: "Formato A3 en papel libre de ácido" },
+        { src: "assets/images/personas/(21).jpg",            title: "Mirada en Sombra",                   tech: "Estudio de luces y claroscuro en carboncillo — Formato A4" },
+        { src: "assets/images/personas/nro91.1.jpg",         title: "Expresión Realista",                 tech: "Papel de algodón de textura fina — Formato A3" },
+    ];
+
     const heroFrame = document.getElementById("hero-artwork-frame");
-    const heroImg = document.getElementById("hero-interactive-img");
+    const heroImg   = document.getElementById("hero-interactive-img");
 
     if (heroFrame && heroImg) {
+        let currentSlide = 0;
+        let slideshowTimer = null;
+        let isTransitioning = false;
+
+        // Configuración inicial de capas para la transición cinematográfica
+        heroImg.className = "hero-slide-layer is-panning";
+        
+        const heroBgImg = document.createElement("img");
+        heroBgImg.className = "hero-slide-layer prep-enter";
+        heroBgImg.alt = "";
+        heroBgImg.setAttribute("aria-hidden", "true");
+        heroFrame.insertBefore(heroBgImg, heroImg);
+
+        const layers = [heroImg, heroBgImg];
+        let activeLayerIdx = 0;
+
+        // Precarga de imágenes para asegurar fluidez perfecta sin retardos
+        HERO_SLIDES.forEach(slide => {
+            const img = new Image();
+            img.src = slide.src;
+        });
+
+        function goToSlide(index) {
+            if (isTransitioning) return;
+            isTransitioning = true;
+
+            const slide = HERO_SLIDES[index];
+            const currentLayer = layers[activeLayerIdx];
+            activeLayerIdx = (activeLayerIdx + 1) % 2;
+            const nextLayer = layers[activeLayerIdx];
+
+            // 1. La imagen actual continúa desplazándose a la izquierda y pierde opacidad hasta desaparecer
+            currentLayer.className = "hero-slide-layer is-exiting";
+
+            // 2. La siguiente imagen se prepara desplazada a la derecha con opacidad baja
+            nextLayer.src = slide.src;
+            nextLayer.alt = slide.title || "Retrato a lápiz por Alexis";
+            nextLayer.className = "hero-slide-layer prep-enter";
+
+            // Forzar renderizado previo para fijar el punto inicial
+            void nextLayer.offsetWidth;
+
+            // 3. Entra desde la derecha acelerando suavemente hacia 0px y aumentando opacidad a 1
+            nextLayer.className = "hero-slide-layer is-entering";
+
+            // Al completar la entrada, pasa al desplazamiento continuo extremadamente sutil a la izquierda
+            setTimeout(() => {
+                if (nextLayer.classList.contains("is-entering")) {
+                    nextLayer.className = "hero-slide-layer is-panning";
+                }
+            }, 750);
+
+            // Reestablecer el estado de la capa saliente tras completar su salida
+            setTimeout(() => {
+                if (currentLayer.classList.contains("is-exiting")) {
+                    currentLayer.className = "hero-slide-layer prep-enter";
+                }
+                isTransitioning = false;
+            }, 1050);
+
+            // Actualizar el click del lightbox para la imagen actual
+            heroFrame.onclick = function () {
+                openModal(slide.src, slide.title, slide.tech);
+            };
+        }
+
+        function nextSlide() {
+            currentSlide = (currentSlide + 1) % HERO_SLIDES.length;
+            goToSlide(currentSlide);
+        }
+
+        function startSlideshow() {
+            if (!slideshowTimer) {
+                slideshowTimer = setInterval(nextSlide, 4500);
+            }
+        }
+
+        function stopSlideshow() {
+            if (slideshowTimer) {
+                clearInterval(slideshowTimer);
+                slideshowTimer = null;
+            }
+        }
+
+        // Pausar al hacer hover para permitir contemplación
+        heroFrame.addEventListener("mouseenter", stopSlideshow);
+        heroFrame.addEventListener("mouseleave", function () {
+            heroFrame.style.transition = "transform 0.6s cubic-bezier(0.16, 1, 0.3, 1)";
+            heroFrame.style.transform = "perspective(1000px) rotateX(0deg) rotateY(0deg) translateY(0px)";
+            startSlideshow();
+        });
+
+        // Micro-tilt al mover el mouse en el marco del hero
         heroFrame.addEventListener("mousemove", function (e) {
             const rect = heroFrame.getBoundingClientRect();
             const x = e.clientX - rect.left;
@@ -52,29 +158,20 @@ document.addEventListener("DOMContentLoaded", function () {
             const centerX = rect.width / 2;
             const centerY = rect.height / 2;
 
-            const moveX = ((x - centerX) / centerX) * 2.5;
-            const moveY = ((y - centerY) / centerY) * 2.5;
             const rotateX = ((centerY - y) / centerY) * 1.0;
             const rotateY = ((x - centerX) / centerX) * 1.0;
 
-            heroFrame.style.animationPlayState = "paused";
             heroFrame.style.transition = "transform 0.15s cubic-bezier(0.16, 1, 0.3, 1)";
             heroFrame.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-2px)`;
-            heroImg.style.transform = `scale(1.02) translate(${moveX}px, ${moveY}px)`;
         });
 
-        heroFrame.addEventListener("mouseleave", function () {
-            heroFrame.style.transition = "transform 0.6s cubic-bezier(0.16, 1, 0.3, 1)";
-            heroFrame.style.transform = "perspective(1000px) rotateX(0deg) rotateY(0deg) translateY(0px)";
-            heroImg.style.transform = "scale(1) translate(0px, 0px)";
-            setTimeout(() => {
-                if (heroFrame) heroFrame.style.animationPlayState = "running";
-            }, 600);
-        });
-
+        // Click inicial abre la obra activa en el modal
         heroFrame.addEventListener("click", function () {
-            openModal("assets/images/hero/nro38.1.jpg", "Retrato Hiperrealista de Rostro", "Grafito & Carboncillo sobre papel Canson 300g — Formato A3");
+            openModal(HERO_SLIDES[currentSlide].src, HERO_SLIDES[currentSlide].title, HERO_SLIDES[currentSlide].tech);
         });
+
+        // Iniciar el slideshow
+        startSlideshow();
     }
 
     // ----------------------------------------------------------------------

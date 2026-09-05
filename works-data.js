@@ -65,10 +65,10 @@ const WORKS_DATA = [
     },
     {
         id: "persona-06",
-        title: "Estudio de Expresión N° 107",
+        title: "Retrato Hiperrealista a Mano Alzada",
         category: "personas",
         categoryLabel: "Personas",
-        image: "assets/images/hero/Nro3.jpg",
+        image: "assets/images/personas/nro38.1.jpg",
         technique: "Grafito fino alzada",
         format: "Formato A4",
         featured: false
@@ -78,7 +78,7 @@ const WORKS_DATA = [
         title: "Contraste Profundo N° 70",
         category: "personas",
         categoryLabel: "Personas",
-        image: "assets/images/personas/102.jpg",
+        image: "assets/images/personas/70.jpg",
         technique: "Carboncillo y esfumado",
         format: "Formato A3",
         featured: false
@@ -88,7 +88,7 @@ const WORKS_DATA = [
         title: "Retrato en Grafito N° 71",
         category: "personas",
         categoryLabel: "Personas",
-        image: "assets/images/hero/diego.jpg",
+        image: "assets/images/personas/71.jpg",
         technique: "Grafito puro sobre papel de 300g",
         format: "Formato A4",
         featured: false
@@ -105,28 +105,7 @@ const WORKS_DATA = [
     },
 
     // --- CATEGORÍA: MASCOTAS ---
-   
     {
-        id: "mascota-04",
-        title: "Detalle de Pelaje N° 64",
-        category: "mascotas",
-        categoryLabel: "Mascotas",
-        image: "assets/images/mascotas/64.jpg",
-        technique: "Grafito 4B y 6B",
-        format: "Formato A4",
-        featured: false
-    }, 
-    {
-        id: "mascota-05",
-        title: "Mirada Animal N° 65",
-        category: "mascotas",
-        categoryLabel: "Mascotas",
-        image: "assets/images/mascotas/(19).png",
-        technique: "Papel Canson 300g",
-        format: "Formato A4",
-        featured: false
-    },
-     {
         id: "mascota-01",
         title: "Retrato de Mascota en Pelaje",
         category: "mascotas",
@@ -159,10 +138,10 @@ const WORKS_DATA = [
     // --- CATEGORÍA: CUADROS Y OBRAS ORIGINALES ---
     {
         id: "cuadro-01",
-        title: "Estudio de Sombras N° 69",
+        title: "Estudio de Sombras y Luces",
         category: "cuadros",
         categoryLabel: "Cuadros & Obras",
-        image: "assets/images/personas/103.jpg",
+        image: "assets/images/personas/58.jpg",
         technique: "Grafito puro y carboncillo comprimido",
         format: "Formato A2",
         featured: true
@@ -185,6 +164,138 @@ const WORKS_DATA = [
         image: "assets/images/personas/nro91.jpg",
         technique: "Grafito graduado sobre papel especial",
         format: "Formato A2",
+        featured: false
+    },
+
+    // --- NUEVAS OBRAS INCORPORADAS ---
+    {
+        id: "persona-10",
+        title: "Lionel Messi — Copa y Malvinas",
+        category: "personas",
+        categoryLabel: "Personas",
+        image: "assets/images/personas/Messi Copa Malvinas (2026).jpg",
+        technique: "Grafito & Carboncillo sobre papel de alta gama",
+        format: "Formato A3",
+        featured: true
+    },
+    {
+        id: "persona-11",
+        title: "Estudio de Expresión (2026) N° 1",
+        category: "personas",
+        categoryLabel: "Personas",
+        image: "assets/images/personas/(2026) 1.jpg",
+        technique: "Grafito sobre papel Canson",
+        format: "Formato A4",
+        featured: false
+    },
+    {
+        id: "persona-12",
+        title: "Estudio de Expresión (2026) N° 2",
+        category: "personas",
+        categoryLabel: "Personas",
+        image: "assets/images/personas/(2026) 2.jpg",
+        technique: "Grafito sobre papel Canson",
+        format: "Formato A4",
+        featured: false
+    },
+    {
+        id: "persona-13",
+        title: "Retrato en Grafito N° 1",
+        category: "personas",
+        categoryLabel: "Personas",
+        image: "assets/images/personas/1.jpg",
+        technique: "Grafito puro sobre papel de algodón",
+        format: "Formato A4",
+        featured: false
+    },
+    {
+        id: "persona-14",
+        title: "Retrato en Grafito N° 2",
+        category: "personas",
+        categoryLabel: "Personas",
+        image: "assets/images/personas/2.jpg",
+        technique: "Grafito puro sobre papel de algodón",
+        format: "Formato A4",
+        featured: false
+    },
+    {
+        id: "persona-15",
+        title: "Retrato de Rostro N° 29",
+        category: "personas",
+        categoryLabel: "Personas",
+        image: "assets/images/personas/29.jpg",
+        technique: "Grafito y claroscuro",
+        format: "Formato A4",
+        featured: false
+    },
+    {
+        id: "persona-16",
+        title: "Estudio de Expresión N° 57",
+        category: "personas",
+        categoryLabel: "Personas",
+        image: "assets/images/personas/57.jpg",
+        technique: "Grafito puro sobre papel",
+        format: "Formato A4",
+        featured: false
+    },
+    {
+        id: "persona-17",
+        title: "Retrato Hiperrealista N° 89",
+        category: "personas",
+        categoryLabel: "Personas",
+        image: "assets/images/personas/89.jpg",
+        technique: "Grafito graduado (2H a 8B)",
+        format: "Formato A4",
+        featured: false
+    },
+    {
+        id: "persona-18",
+        title: "Retrato a Lápiz N° 33",
+        category: "personas",
+        categoryLabel: "Personas",
+        image: "assets/images/personas/nro33.jpg",
+        technique: "Grafito sobre papel Canson 300g",
+        format: "Formato A4",
+        featured: false
+    },
+    {
+        id: "persona-19",
+        title: "Retrato a Lápiz N° 45",
+        category: "personas",
+        categoryLabel: "Personas",
+        image: "assets/images/personas/nro45.jpg",
+        technique: "Grafito & Carboncillo sobre papel",
+        format: "Formato A3",
+        featured: false
+    },
+    {
+        id: "persona-20",
+        title: "Estudio de Expresión N° 3",
+        category: "personas",
+        categoryLabel: "Personas",
+        image: "assets/images/hero/Nro3.jpg",
+        technique: "Grafito fino a mano alzada",
+        format: "Formato A4",
+        featured: false
+    },
+    {
+        id: "mascota-04",
+        title: "Retrato de Mascota N° 3",
+        category: "mascotas",
+        categoryLabel: "Mascotas",
+        image: "assets/images/mascotas/3.jpg",
+        technique: "Textura de pelaje a grafito",
+        format: "Formato A4",
+        featured: false
+    },
+    {
+        id: "mascota-05",
+        title: "Retrato de Mascota N° 5",
+        category: "mascotas",
+        categoryLabel: "Mascotas",
+        image: "assets/images/mascotas/5.jpg",
+        technique: "Grafito & Carboncillo sobre papel",
+        format: "Formato A4",
         featured: false
     }
 ];
