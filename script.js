@@ -5,7 +5,45 @@
 
 document.addEventListener("DOMContentLoaded", function () {
     // ----------------------------------------------------------------------
-    // 0. SISTEMA DE TEMAS CLARO / OSCURO (CON PERSISTENCIA)
+    // 0.0 PANTALLA DE INTRODUCCIÓN / CARGA INICIAL (LUJO EDITORIAL)
+    // ----------------------------------------------------------------------
+    const introScreen = document.getElementById("intro-screen");
+    if (introScreen) {
+        const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+        // 1.65s para apreciar la animación completa de carga antes de iniciar la suave transición de fade-out
+        const minIntroDuration = prefersReducedMotion ? 400 : 1650;
+        const introStartTime = performance.now();
+        let isIntroDismissed = false;
+
+        function dismissIntro() {
+            if (isIntroDismissed) return;
+            isIntroDismissed = true;
+
+            introScreen.classList.add("intro-fade-out");
+            document.body.classList.remove("intro-active");
+
+            setTimeout(() => {
+                introScreen.style.display = "none";
+            }, 800);
+        }
+
+        function handleIntroCompletion() {
+            const elapsed = performance.now() - introStartTime;
+            const remaining = Math.max(0, minIntroDuration - elapsed);
+            setTimeout(dismissIntro, remaining);
+        }
+
+        if (document.readyState === "complete") {
+            handleIntroCompletion();
+        } else {
+            window.addEventListener("load", handleIntroCompletion, { once: true });
+            // Fallback de seguridad para no bloquear nunca la navegación
+            setTimeout(dismissIntro, 2500);
+        }
+    }
+
+    // ----------------------------------------------------------------------
+    // 0.1 SISTEMA DE TEMAS CLARO / OSCURO (CON PERSISTENCIA)
     // ----------------------------------------------------------------------
     const themeToggleBtn = document.getElementById("theme-toggle-btn");
     const savedTheme = localStorage.getItem("theme") || "dark";

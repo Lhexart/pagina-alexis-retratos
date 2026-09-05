@@ -177,8 +177,173 @@ body::before {
     mix-blend-mode: multiply;
 }
 
-body.no-scroll {
+body.no-scroll,
+body.intro-active {
     overflow: hidden;
+}
+
+/* --------------------------------------------------------------------------
+   2.1 PANTALLA DE INTRODUCCIÓN / CARGA INICIAL (LUJO EDITORIAL)
+   -------------------------------------------------------------------------- */
+.intro-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    height: 100dvh;
+    background-color: #070709;
+    z-index: 100000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    pointer-events: auto;
+    overflow: hidden;
+    opacity: 1;
+    visibility: visible;
+    transition: opacity 0.75s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.75s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.intro-screen.intro-fade-out {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+}
+
+.intro-screen.intro-fade-out .intro-content {
+    opacity: 0.85;
+    transform: scale(0.985);
+    transition: opacity 0.5s ease-out, transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.intro-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 0 var(--space-md);
+    will-change: opacity, transform;
+    user-select: none;
+}
+
+.intro-brand {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.intro-title {
+    font-family: var(--font-serif);
+    font-size: clamp(2.4rem, 6vw, 3.8rem);
+    font-weight: 600;
+    color: #f7f6f2;
+    letter-spacing: 0.22em;
+    text-indent: 0.22em; /* Centrado óptico exacto compensando letter-spacing */
+    line-height: 1;
+    margin-bottom: 0.65rem;
+    opacity: 0;
+    transform: translateY(8px);
+    animation: introFadeInTitle 0.9s cubic-bezier(0.16, 1, 0.3, 1) 0.1s forwards;
+}
+
+.intro-subtitle {
+    font-family: var(--font-sans);
+    font-size: clamp(0.72rem, 1.8vw, 0.875rem);
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.3em;
+    text-indent: 0.3em; /* Centrado óptico */
+    color: var(--color-accent-gold, #d4af37);
+    opacity: 0;
+    transform: translateY(6px);
+    animation: introFadeInSub 0.85s cubic-bezier(0.16, 1, 0.3, 1) 0.25s forwards;
+}
+
+.intro-progress-track {
+    margin-top: 1.85rem;
+    width: 96px;
+    height: 1px;
+    background-color: rgba(247, 246, 242, 0.08);
+    position: relative;
+    overflow: hidden;
+    border-radius: 1px;
+    opacity: 0;
+    animation: introTrackFade 0.6s ease 0.25s forwards;
+}
+
+.intro-progress-bar {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    background: linear-gradient(90deg, rgba(212, 175, 55, 0.2) 0%, #d4af37 60%, #e6ca65 100%);
+    transform: translateX(-100%);
+    animation: introProgressBar 1.35s cubic-bezier(0.25, 1, 0.5, 1) 0.35s forwards;
+}
+
+@keyframes introFadeInTitle {
+    0% {
+        opacity: 0;
+        transform: translateY(10px);
+        letter-spacing: 0.16em;
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+        letter-spacing: 0.22em;
+    }
+}
+
+@keyframes introFadeInSub {
+    0% {
+        opacity: 0;
+        transform: translateY(8px);
+    }
+    100% {
+        opacity: 0.92;
+        transform: translateY(0);
+    }
+}
+
+@keyframes introTrackFade {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+@keyframes introProgressBar {
+    0% {
+        transform: translateX(-100%);
+    }
+    60% {
+        transform: translateX(-20%);
+    }
+    100% {
+        transform: translateX(0%);
+    }
+}
+
+@media (max-width: 576px) {
+    .intro-title {
+        font-size: 2.15rem;
+        letter-spacing: 0.18em;
+        text-indent: 0.18em;
+    }
+    .intro-subtitle {
+        font-size: 0.6875rem;
+        letter-spacing: 0.24em;
+        text-indent: 0.24em;
+    }
+    .intro-progress-track {
+        width: 80px;
+        margin-top: 1.5rem;
+    }
 }
 
 img {
@@ -1852,5 +2017,16 @@ section {
         opacity: 1 !important;
         transform: none !important;
         transition: none !important;
+    }
+    .intro-title,
+    .intro-subtitle {
+        opacity: 1 !important;
+        transform: none !important;
+    }
+    .intro-progress-track {
+        display: none !important;
+    }
+    .intro-screen {
+        transition-duration: 0.35s !important;
     }
 }
