@@ -82,14 +82,14 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Los mejores dibujos para el slideshow del hero
     const HERO_SLIDES = [
-        { src: "assets/images/personas/nro38.1.jpg",           title: "Retrato Hiperrealista de Rostro",    tech: "Grafito & Carboncillo sobre papel Canson 300g — Formato A3" },
-        { src: "assets/images/hero/Messi Copa Malvinas (2026).jpg", title: "Lionel Messi — Copa y Malvinas", tech: "Grafito & Carboncillo sobre papel — Formato A3" },
-        { src: "assets/images/hero/nro89.1.jpg",             title: "Retrato de Lionel Messi",            tech: "Grafito graduado (2H a 8B) — Formato A3" },
-        { src: "assets/images/personas/nro56.jpg",           title: "Retrato Hiperrealista de Rostro",    tech: "Grafito & Carboncillo sobre papel Canson 300g — Formato A3" },
-        { src: "assets/images/hero/nro89.jpg",               title: "Retrato Individual",                 tech: "Grafito sobre papel Canson 300g — Formato A4" },
-        { src: "assets/images/hero/Nro3.1.jpg",              title: "Retrato Familiar / Pareja",          tech: "Formato A3 en papel libre de ácido" },
-        { src: "assets/images/personas/(21).jpg",            title: "Mirada en Sombra",                   tech: "Estudio de luces y claroscuro en carboncillo — Formato A4" },
-        { src: "assets/images/personas/nro91.1.jpg",         title: "Expresión Realista",                 tech: "Papel de algodón de textura fina — Formato A3" },
+        { src: "assets/images/personas/nro38.1.jpg",           title: "Retrato a lápiz",           tech: "" },
+        { src: "assets/images/hero/Messi Copa Malvinas (2026).jpg", title: "Pintura de Lionel Messi",   tech: "" },
+        { src: "assets/images/hero/nro89.1.jpg",             title: "Retrato de Lionel Messi",   tech: "" },
+        { src: "assets/images/personas/nro56.jpg",           title: "Retrato a lápiz",           tech: "" },
+        { src: "assets/images/hero/nro89.jpg",               title: "Retrato a lápiz",           tech: "" },
+        { src: "assets/images/hero/Nro3.1.jpg",              title: "Retrato de pareja",         tech: "" },
+        { src: "assets/images/personas/(21).jpg",            title: "Retrato a lápiz",           tech: "" },
+        { src: "assets/images/personas/nro91.1.jpg",         title: "Retrato a lápiz",           tech: "" },
     ];
 
     const heroFrame = document.getElementById("hero-artwork-frame");
@@ -262,21 +262,29 @@ document.addEventListener("DOMContentLoaded", function () {
         article.className = "artwork-card filter-trigger reveal-on-scroll";
         article.style.transitionDelay = `${(staggerIndex % 6) * 0.05}s`;
         article.setAttribute("data-title", work.title);
-        article.setAttribute("data-tech", `${work.technique} — ${work.format}`);
+        
+        const techParts = [work.technique, work.format].filter(Boolean);
+        const techString = techParts.join(" — ");
+        if (techString) {
+            article.setAttribute("data-tech", techString);
+        }
+        
         article.setAttribute("role", "button");
         article.setAttribute("tabindex", "0");
         article.setAttribute("aria-label", `Ver ${work.title} en detalle`);
 
+        const infoSubtitle = techString ? `<p>${techString}</p>` : "";
+
         article.innerHTML = `
             <div class="artwork-image">
-                <img src="${work.image}" alt="${work.title} - Retrato a lápiz por Alexis" loading="lazy">
+                <img src="${work.image}" alt="${work.title} - Alexis" loading="lazy">
                 <div class="view-overlay">
                     <span>Ver en detalle</span>
                 </div>
             </div>
             <div class="artwork-info">
                 <h3>${work.title}</h3>
-                <p>${work.technique}</p>
+                ${infoSubtitle}
             </div>
         `;
 
@@ -643,7 +651,9 @@ document.addEventListener("DOMContentLoaded", function () {
         if (index < 0 || index >= activeWorksList.length) return;
         currentActiveIndex = index;
         const work = activeWorksList[index];
-        openModal(work.image, work.title, `${work.technique} — ${work.format}`);
+        const techParts = [work.technique, work.format].filter(Boolean);
+        const techString = techParts.join(" — ");
+        openModal(work.image, work.title, techString);
     }
 
     function showNextArtwork() {
@@ -683,8 +693,16 @@ document.addEventListener("DOMContentLoaded", function () {
         modalImg.src = imgSrc;
         modalImg.alt = title || "Retrato a lápiz por Alexis";
 
-        if (modalTitle) modalTitle.textContent = title || "Obra a Lápiz";
-        if (modalTech) modalTech.textContent = tech || "Grafito sobre papel Canson 300g";
+        if (modalTitle) modalTitle.textContent = title || "Retrato a lápiz";
+        if (modalTech) {
+            if (tech && tech.trim()) {
+                modalTech.textContent = tech;
+                modalTech.style.display = "block";
+            } else {
+                modalTech.textContent = "";
+                modalTech.style.display = "none";
+            }
+        }
 
         if (modalWaBtn) {
             const encodedTitle = encodeURIComponent(title || "esta obra");
@@ -979,6 +997,10 @@ document.addEventListener("DOMContentLoaded", function () {
                     comparisonAfterImg.src = item.artworkSrc;
                     comparisonAfterImg.alt = item.altAfter;
                 }
+
+                // Restablecer el deslizador al centro (50%) al cambiar de comparación
+                sliderAfterLayer.style.width = "50%";
+                sliderHandle.style.left = "50%";
 
                 // Actualizar estado de dots
                 if (comparisonDots) {
