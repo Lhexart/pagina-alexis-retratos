@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://lhexart.github.io/pagina-alexis-retratos/sitemap.xml

@@ -293,10 +293,11 @@ document.addEventListener("DOMContentLoaded", function () {
         article.setAttribute("aria-label", `Ver ${work.title} en detalle`);
 
         const infoSubtitle = techString ? `<p>${techString}</p>` : "";
+        const artworkAlt = work.alt || work.title || "Retrato a lápiz";
 
         article.innerHTML = `
             <div class="artwork-image">
-                <img src="${work.image}" alt="${work.title} - Alexis" loading="lazy">
+                <img src="${work.image}" alt="${artworkAlt}" loading="lazy">
                 <div class="view-overlay">
                     <span>Ver en detalle</span>
                 </div>
