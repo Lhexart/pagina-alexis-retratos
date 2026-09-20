@@ -82,14 +82,13 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Los mejores dibujos para el slideshow del hero
     const HERO_SLIDES = [
-        { src: "assets/images/personas/nro38.1.jpg",           title: "Retrato a lápiz",           tech: "" },
-        { src: "assets/images/hero/Messi Copa Malvinas (2026).jpg", title: "Pintura de Lionel Messi",   tech: "" },
-        { src: "assets/images/hero/nro89.1.jpg",             title: "Retrato de Lionel Messi",   tech: "" },
-        { src: "assets/images/personas/nro56.jpg",           title: "Retrato a lápiz",           tech: "" },
-        { src: "assets/images/hero/nro89.jpg",               title: "Retrato a lápiz",           tech: "" },
-        { src: "assets/images/hero/Nro3.1.jpg",              title: "Retrato de pareja",         tech: "" },
-        { src: "assets/images/personas/(21).jpg",            title: "Retrato a lápiz",           tech: "" },
-        { src: "assets/images/personas/nro91.1.jpg",         title: "Retrato a lápiz",           tech: "" },
+        { src: "assets/images/personas/nro38.1.jpg",           title: "Retrato a lápiz",                                 tech: "" },
+        { src: "assets/images/hero/Messi Copa Malvinas (2026).jpg", title: "Messi — Copa Malvinas",                     tech: "Pintura acrílica" },
+        { src: "assets/images/hero/nro89.1.jpg",             title: "Messi besando la Copa del Mundo",                 tech: "Dibujo a grafito — 25 × 35 cm" },
+        { src: "assets/images/personas/nro56.jpg",           title: "Retrato a lápiz",                                 tech: "Dibujo a grafito — 70 × 40 cm" },
+        { src: "assets/images/hero/Nro3.1.jpg",              title: "Messi con la Copa América",                       tech: "Técnica mixta: grafito y color — 35 × 50 cm" },
+        { src: "assets/images/personas/(21).jpg",            title: "Messi sosteniendo y besando la Copa del Mundo",    tech: "Lápiz grafito — 35 × 35 cm" },
+        { src: "assets/images/personas/nro91.1.jpg",         title: "Retrato a lápiz",                                 tech: "" },
     ];
 
     const heroFrame = document.getElementById("hero-artwork-frame");
@@ -691,7 +690,7 @@ document.addEventListener("DOMContentLoaded", function () {
     function openModal(imgSrc, title, tech) {
         if (!artModal || !modalImg) return;
         modalImg.src = imgSrc;
-        modalImg.alt = title || "Retrato a lápiz por Alexis";
+        modalImg.alt = title || "Retrato a lápiz";
 
         if (modalTitle) modalTitle.textContent = title || "Retrato a lápiz";
         if (modalTech) {
@@ -705,8 +704,10 @@ document.addEventListener("DOMContentLoaded", function () {
         }
 
         if (modalWaBtn) {
-            const encodedTitle = encodeURIComponent(title || "esta obra");
-            modalWaBtn.href = `https://wa.me/?text=Hola%20Alexis,%20estaba%20viendo%20tu%20web%20y%20me%20interes%C3%B3%20la%20obra%20"${encodedTitle}".%20Quisiera%20consultar%20presupuesto%20para%20un%20encargo%20similar.`;
+            const obraTitle = title || "esta obra";
+            const subject = encodeURIComponent("Consulta por una obra similar");
+            const body = encodeURIComponent(`Hola,\n\nVi la obra "${obraTitle}" en tu página y quería consultar por un trabajo similar.\n\nGracias.`);
+            modalWaBtn.href = `https://mail.google.com/mail/?view=cm&fs=1&to=alexis.q.2106@gmail.com&su=${subject}&body=${body}`;
         }
 
         updateModalCounter();

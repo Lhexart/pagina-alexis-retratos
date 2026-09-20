@@ -515,17 +515,18 @@ section {
 }
 
 .btn-header-wa {
-    background-color: rgba(37, 211, 102, 0.08);
-    color: var(--color-wa-green);
-    border: 1px solid rgba(37, 211, 102, 0.25);
+    background-color: rgba(212, 175, 55, 0.08);
+    color: var(--color-accent-gold);
+    border: 1px solid rgba(212, 175, 55, 0.25);
     padding: var(--space-2xs) var(--space-md);
     font-size: var(--fs-xs);
 }
 
 .btn-header-wa:hover {
-    background-color: var(--color-wa-green);
-    color: #ffffff;
-    box-shadow: 0 6px 20px var(--color-wa-glow);
+    background-color: var(--color-accent-gold);
+    color: var(--color-bg-base);
+    border-color: var(--color-accent-gold);
+    box-shadow: 0 6px 20px var(--color-accent-gold-glow);
     transform: translateY(-2px);
 }
 
@@ -1762,6 +1763,131 @@ section {
     font-size: var(--fs-sm);
     color: var(--color-text-muted);
     line-height: var(--lh-relaxed);
+}
+
+.guide-banner {
+    margin-top: var(--space-2xl);
+    background-color: var(--color-bg-card);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-xl);
+    padding: var(--space-xl) var(--space-2xl);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-xl);
+    transition: border-color var(--transition-base), box-shadow var(--transition-base);
+}
+
+.guide-banner:hover {
+    border-color: var(--color-border-hover);
+    box-shadow: var(--shadow-md);
+}
+
+.guide-banner-content {
+    flex: 1;
+}
+
+.guide-badge {
+    display: inline-block;
+    font-size: var(--fs-xs);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: var(--ls-caps);
+    color: var(--color-accent-gold);
+    background-color: var(--color-accent-gold-glow);
+    padding: var(--space-3xs) var(--space-xs);
+    border-radius: var(--radius-sm);
+    margin-bottom: var(--space-xs);
+}
+
+.guide-title {
+    font-family: var(--font-serif);
+    font-size: var(--fs-2xl);
+    font-weight: 600;
+    color: var(--color-text-main);
+    margin-bottom: var(--space-xs);
+}
+
+.guide-desc {
+    font-size: var(--fs-sm);
+    color: var(--color-text-muted);
+    line-height: var(--lh-relaxed);
+    max-width: 580px;
+}
+
+.guide-banner-actions {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+    flex-shrink: 0;
+}
+
+.btn-guide-view {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-xs);
+    background-color: var(--color-accent-gold);
+    color: #070709;
+    font-weight: 600;
+    font-size: var(--fs-sm);
+    padding: var(--space-sm) var(--space-lg);
+    border-radius: var(--radius-md);
+    text-decoration: none;
+    transition: all var(--transition-base);
+}
+
+.btn-guide-view:hover {
+    background-color: var(--color-accent-gold-hover);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px var(--color-accent-gold-glow);
+}
+
+.btn-guide-view:focus-visible {
+    outline: 2px solid var(--color-accent-gold);
+    outline-offset: 3px;
+}
+
+.btn-guide-download {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-xs);
+    background-color: transparent;
+    color: var(--color-text-muted);
+    border: 1px solid var(--color-border);
+    font-size: var(--fs-sm);
+    padding: var(--space-sm) var(--space-md);
+    border-radius: var(--radius-md);
+    text-decoration: none;
+    transition: all var(--transition-base);
+}
+
+.btn-guide-download:hover {
+    color: var(--color-text-main);
+    border-color: var(--color-border-hover);
+    background-color: var(--color-bg-hover);
+    transform: translateY(-2px);
+}
+
+.btn-guide-download:focus-visible {
+    outline: 2px solid var(--color-accent-gold);
+    outline-offset: 3px;
+}
+
+@media (max-width: 768px) {
+    .guide-banner {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: var(--space-lg);
+    }
+    .guide-banner-actions {
+        width: 100%;
+        flex-direction: column;
+    }
+    .btn-guide-view,
+    .btn-guide-download {
+        width: 100%;
+        justify-content: center;
+    }
 }
 
 /* --------------------------------------------------------------------------
