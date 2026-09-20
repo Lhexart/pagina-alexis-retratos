@@ -24,10 +24,6 @@
     --color-accent-gold-light: #e6ca65;
     --color-accent-gold-glow: rgba(212, 175, 55, 0.12);
 
-    --color-wa-green: #25d366;
-    --color-wa-green-hover: #20bd5a;
-    --color-wa-glow: rgba(37, 211, 102, 0.18);
-
     --color-border: rgba(247, 246, 242, 0.07);
     --color-border-hover: rgba(212, 175, 55, 0.4);
 
@@ -426,7 +422,7 @@ section {
 /* --------------------------------------------------------------------------
    4. BOTONES Y COMPONENTES DE ACCIÓN EDITORIAL
    -------------------------------------------------------------------------- */
-.btn-primary, .btn-secondary, .btn-header-wa, .btn-whatsapp-large, .btn-email-large {
+.btn-primary, .btn-secondary, .btn-header-cta, .btn-email-large {
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -514,7 +510,7 @@ section {
     display: none;
 }
 
-.btn-header-wa {
+.btn-header-cta {
     background-color: rgba(212, 175, 55, 0.08);
     color: var(--color-accent-gold);
     border: 1px solid rgba(212, 175, 55, 0.25);
@@ -522,46 +518,12 @@ section {
     font-size: var(--fs-xs);
 }
 
-.btn-header-wa:hover {
+.btn-header-cta:hover {
     background-color: var(--color-accent-gold);
     color: var(--color-bg-base);
     border-color: var(--color-accent-gold);
     box-shadow: 0 6px 20px var(--color-accent-gold-glow);
     transform: translateY(-2px);
-}
-
-.btn-whatsapp-large {
-    background-color: rgba(37, 211, 102, 0.12);
-    color: #25d366;
-    border: 1px solid rgba(37, 211, 102, 0.35);
-    font-size: var(--fs-sm);
-    padding: var(--space-sm) var(--space-xl);
-    min-height: 48px;
-}
-
-.btn-whatsapp-large:hover {
-    background-color: var(--color-wa-green);
-    color: #070709;
-    border-color: var(--color-wa-green);
-    transform: translateY(-2px);
-    box-shadow: 0 8px 24px var(--color-wa-glow);
-}
-
-.btn-whatsapp-large:focus-visible {
-    outline: 2px solid var(--color-wa-green);
-    outline-offset: 3px;
-}
-
-[data-theme="light"] .btn-whatsapp-large {
-    background-color: rgba(37, 211, 102, 0.10);
-    color: #128c3e;
-    border: 1px solid rgba(37, 211, 102, 0.35);
-}
-
-[data-theme="light"] .btn-whatsapp-large:hover {
-    background-color: #1ebe5d;
-    color: #ffffff;
-    border-color: #1ebe5d;
 }
 
 .btn-email-large {
@@ -1398,7 +1360,7 @@ section {
     flex-shrink: 0;
 }
 
-.caption-wa-link {
+.caption-contact-link {
     display: inline-flex;
     align-items: center;
     gap: var(--space-3xs);
@@ -1415,14 +1377,14 @@ section {
     white-space: nowrap;
 }
 
-.caption-wa-link:hover {
+.caption-contact-link:hover {
     background-color: var(--color-accent-gold);
     color: var(--color-bg-base);
     border-color: var(--color-accent-gold);
     transform: translateY(-1px);
 }
 
-.caption-wa-link:focus-visible {
+.caption-contact-link:focus-visible {
     outline: 2px solid var(--color-accent-gold);
     outline-offset: 2px;
 }
@@ -1863,27 +1825,26 @@ section {
 .btn-guide-download {
     display: inline-flex;
     align-items: center;
-    gap: var(--space-xs);
+    gap: var(--space-3xs);
     background-color: transparent;
     color: var(--color-text-muted);
-    border: 1px solid var(--color-border);
+    border: none;
     font-size: var(--fs-sm);
-    padding: var(--space-sm) var(--space-md);
-    border-radius: var(--radius-md);
+    font-weight: 500;
+    padding: var(--space-2xs) var(--space-xs);
     text-decoration: none;
-    transition: all var(--transition-base);
+    transition: color var(--transition-base), transform var(--transition-base);
 }
 
 .btn-guide-download:hover {
     color: var(--color-text-main);
-    border-color: var(--color-border-hover);
-    background-color: var(--color-bg-hover);
-    transform: translateY(-2px);
+    transform: translateY(-1px);
 }
 
 .btn-guide-download:focus-visible {
     outline: 2px solid var(--color-accent-gold);
     outline-offset: 3px;
+    border-radius: var(--radius-sm);
 }
 
 @media (max-width: 768px) {
@@ -1895,11 +1856,17 @@ section {
     .guide-banner-actions {
         width: 100%;
         flex-direction: column;
+        align-items: center;
+        gap: var(--space-xs);
     }
-    .btn-guide-view,
-    .btn-guide-download {
+    .btn-guide-view {
         width: 100%;
         justify-content: center;
+    }
+    .btn-guide-download {
+        width: auto;
+        justify-content: center;
+        padding: var(--space-2xs) var(--space-sm);
     }
 }
 
@@ -2010,7 +1977,7 @@ section {
 .footer-brand p {
     font-size: var(--fs-xs);
     color: var(--color-text-subtle);
-    margin-top: var(--space-3xs);
+    margin: 0;
 }
 
 .footer-links {
@@ -2122,9 +2089,53 @@ section {
         max-height: calc(100vh - 130px);
     }
 
+    .modal-close-btn {
+        width: 44px;
+        height: 44px;
+        min-width: 44px;
+        min-height: 44px;
+        font-size: 1.875rem;
+    }
+
+    .modal-zoom-controls {
+        padding: 2px 4px;
+        gap: 2px;
+    }
+
+    .modal-ctrl-btn {
+        width: 44px;
+        height: 44px;
+        min-width: 44px;
+        min-height: 44px;
+    }
+
+    .modal-ctrl-btn svg {
+        width: 18px;
+        height: 18px;
+    }
+
+    #modal-zoom-reset-btn {
+        width: auto;
+        min-width: 44px;
+        height: 44px;
+        padding: 0 4px;
+    }
+
+    .zoom-level-text {
+        font-size: 0.75rem;
+        min-width: 36px;
+    }
+
     .modal-nav-btn {
-        width: 38px;
-        height: 38px;
+        width: 44px;
+        height: 44px;
+        min-width: 44px;
+        min-height: 44px;
+    }
+
+    .modal-nav-btn svg {
+        width: 22px;
+        height: 22px;
     }
 
     .modal-nav-btn.prev-btn {
@@ -2139,25 +2150,33 @@ section {
         flex-direction: column;
         align-items: center;
         text-align: center;
-        gap: 4px;
-        padding: 2px var(--space-3xs);
+        gap: 6px;
+        padding: 4px var(--space-3xs);
     }
 
     .caption-info {
         align-items: center;
+        max-width: 100%;
     }
 
     .caption-title {
-        font-size: var(--fs-sm);
+        font-size: 0.9rem;
+        max-width: 90vw;
     }
 
     .caption-tech {
-        font-size: 0.72rem;
+        font-size: 0.8rem;
+        max-width: 90vw;
     }
 
-    .caption-wa-link {
-        font-size: 0.72rem;
-        padding: 2px 8px;
+    .caption-contact-link {
+        font-size: 0.8rem;
+        padding: 5px 14px;
+        min-height: 38px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        white-space: nowrap;
     }
 
     .comparison-divider {
@@ -2183,7 +2202,7 @@ section {
         padding: var(--space-xl) 0;
     }
 
-    .btn-primary, .btn-secondary, .btn-whatsapp-large, .btn-email-large {
+    .btn-primary, .btn-secondary, .btn-email-large {
         width: 100%;
     }
 

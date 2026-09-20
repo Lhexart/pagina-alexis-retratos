@@ -164,11 +164,6 @@ document.addEventListener("DOMContentLoaded", function () {
                 }
                 isTransitioning = false;
             }, 1050);
-
-            // Actualizar el click del lightbox para la imagen actual
-            heroFrame.onclick = function () {
-                openModal(slide.src, slide.title, slide.tech);
-            };
         }
 
         function nextSlide() {
@@ -212,9 +207,12 @@ document.addEventListener("DOMContentLoaded", function () {
             heroFrame.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-2px)`;
         });
 
-        // Click inicial abre la obra activa en el modal
+        // Click abre la obra actualmente activa en el modal
         heroFrame.addEventListener("click", function () {
-            openModal(HERO_SLIDES[currentSlide].src, HERO_SLIDES[currentSlide].title, HERO_SLIDES[currentSlide].tech);
+            const currentObj = HERO_SLIDES[currentSlide];
+            if (currentObj) {
+                openModal(currentObj.src, currentObj.title, currentObj.tech);
+            }
         });
 
         // Iniciar el slideshow
@@ -373,7 +371,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const modalImageFrame = document.getElementById("modal-image-frame");
     const modalTitle = document.getElementById("modal-title");
     const modalTech = document.getElementById("modal-tech");
-    const modalWaBtn = document.getElementById("modal-wa-btn");
+    const modalContactBtn = document.getElementById("modal-contact-btn");
     const modalCloseBtn = document.querySelector(".modal-close-btn");
     const modalBackdrop = document.querySelector(".modal-backdrop");
     const modalPrevBtn = document.getElementById("modal-prev-btn");
@@ -722,13 +720,13 @@ document.addEventListener("DOMContentLoaded", function () {
             }
         }
 
-        if (modalWaBtn) {
+        if (modalContactBtn) {
             const obraTitle = title || "esta obra";
             const subject = encodeURIComponent("Consulta por una obra similar");
             const body = encodeURIComponent(`Hola,\n\nVi la obra "${obraTitle}" en tu página y quería consultar por un trabajo similar.\n\nGracias.`);
-            modalWaBtn.href = `mailto:alexis.q.2106@gmail.com?subject=${subject}&body=${body}`;
-            modalWaBtn.removeAttribute("target");
-            modalWaBtn.removeAttribute("rel");
+            modalContactBtn.href = `mailto:alexis.q.2106@gmail.com?subject=${subject}&body=${body}`;
+            modalContactBtn.removeAttribute("target");
+            modalContactBtn.removeAttribute("rel");
         }
 
         updateModalCounter();
@@ -856,7 +854,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     function initScrollReveal() {
         const revealTargets = document.querySelectorAll(
-            ".section-header, .comparison-slider, .process-feature, .step-card, .about-card, .contact-card, .hero-text-side"
+            ".section-header, .comparison-slider, .process-feature, .step-card, .about-card, .guide-banner, .cta-box, .hero-text-side"
         );
 
         revealTargets.forEach((el) => {
