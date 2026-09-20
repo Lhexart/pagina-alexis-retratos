@@ -82,13 +82,13 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Los mejores dibujos para el slideshow del hero
     const HERO_SLIDES = [
-        { src: "assets/images/personas/nro38.1.jpg",           title: "Retrato a lápiz",                                 tech: "" },
-        { src: "assets/images/hero/Messi Copa Malvinas (2026).jpg", title: "Messi — Copa Malvinas",                     tech: "Pintura acrílica" },
-        { src: "assets/images/hero/nro89.1.jpg",             title: "Messi besando la Copa del Mundo",                 tech: "Dibujo a grafito — 25 × 35 cm" },
-        { src: "assets/images/personas/nro56.jpg",           title: "Retrato a lápiz",                                 tech: "Dibujo a grafito — 70 × 40 cm" },
-        { src: "assets/images/hero/Nro3.1.jpg",              title: "Messi con la Copa América",                       tech: "Técnica mixta: grafito y color — 35 × 50 cm" },
-        { src: "assets/images/personas/(21).jpg",            title: "Messi sosteniendo y besando la Copa del Mundo",    tech: "Lápiz grafito — 35 × 35 cm" },
-        { src: "assets/images/personas/nro91.1.jpg",         title: "Retrato a lápiz",                                 tech: "" },
+        { src: "assets/images/personas/nro38.1.webp",           title: "Retrato a lápiz",                                 tech: "" },
+        { src: "assets/images/hero/Messi Copa Malvinas (2026).webp", title: "Messi — Copa Malvinas",                     tech: "Pintura acrílica" },
+        { src: "assets/images/hero/nro89.1.webp",             title: "Messi besando la Copa del Mundo",                 tech: "Dibujo a grafito — 25 × 35 cm" },
+        { src: "assets/images/personas/nro56.webp",           title: "Retrato a lápiz",                                 tech: "Dibujo a grafito — 70 × 40 cm" },
+        { src: "assets/images/hero/Nro3.1.webp",              title: "Messi con la Copa América",                       tech: "Técnica mixta: grafito y color — 35 × 50 cm" },
+        { src: "assets/images/personas/(21).webp",            title: "Messi sosteniendo y besando la Copa del Mundo",    tech: "Lápiz grafito — 35 × 35 cm" },
+        { src: "assets/images/personas/nro91.1.webp",         title: "Retrato a lápiz",                                 tech: "" },
     ];
 
     const heroFrame = document.getElementById("hero-artwork-frame");
@@ -111,11 +111,18 @@ document.addEventListener("DOMContentLoaded", function () {
         const layers = [heroImg, heroBgImg];
         let activeLayerIdx = 0;
 
-        // Precarga de imágenes para asegurar fluidez perfecta sin retardos
-        HERO_SLIDES.forEach(slide => {
+        // Precarga progresiva: se precarga únicamente la siguiente imagen para no saturar la red al inicio
+        const preloadedIndices = new Set();
+        function preloadSlide(idx) {
+            const targetIdx = (idx + HERO_SLIDES.length) % HERO_SLIDES.length;
+            if (preloadedIndices.has(targetIdx)) return;
+            preloadedIndices.add(targetIdx);
             const img = new Image();
-            img.src = slide.src;
-        });
+            img.src = HERO_SLIDES[targetIdx].src;
+        }
+
+        // Precargar únicamente la imagen que sigue a la inicial
+        preloadSlide((currentSlide + 1) % HERO_SLIDES.length);
 
         function goToSlide(index) {
             if (isTransitioning) return;
@@ -126,12 +133,15 @@ document.addEventListener("DOMContentLoaded", function () {
             activeLayerIdx = (activeLayerIdx + 1) % 2;
             const nextLayer = layers[activeLayerIdx];
 
+            // Precargar con anticipación la siguiente imagen para el próximo cambio
+            preloadSlide((index + 1) % HERO_SLIDES.length);
+
             // 1. La imagen actual continúa desplazándose a la izquierda y pierde opacidad hasta desaparecer
             currentLayer.className = "hero-slide-layer is-exiting";
 
             // 2. La siguiente imagen se prepara desplazada a la derecha con opacidad baja
             nextLayer.src = slide.src;
-            nextLayer.alt = slide.title || "Retrato a lápiz por Alexis";
+            nextLayer.alt = slide.title || "Retrato a lápiz";
             nextLayer.className = "hero-slide-layer prep-enter";
 
             // Forzar renderizado previo para fijar el punto inicial
@@ -227,6 +237,18 @@ document.addEventListener("DOMContentLoaded", function () {
     let activeWorksList = [];
     let currentActiveIndex = -1;
 
+    // Obtener lista ordenada de obras priorizando "featured: true" y manteniendo el orden original en cada grupo
+    function getOrderedWorks(category) {
+        if (typeof WORKS_DATA === "undefined") return [];
+        const baseList = category === "todas"
+            ? WORKS_DATA
+            : WORKS_DATA.filter(work => work.category === category);
+
+        const featured = baseList.filter(work => work.featured === true);
+        const nonFeatured = baseList.filter(work => !work.featured);
+        return [...featured, ...nonFeatured];
+    }
+
     function renderCategoryFilters() {
         if (!categoryFiltersContainer || typeof GALLERY_CATEGORIES === "undefined") return;
         categoryFiltersContainer.innerHTML = "";
@@ -304,11 +326,8 @@ document.addEventListener("DOMContentLoaded", function () {
     function renderGallery(category, append = false) {
         if (!dynamicGalleryGrid || typeof WORKS_DATA === "undefined") return;
 
-        const filteredWorks = category === "todas" 
-            ? WORKS_DATA 
-            : WORKS_DATA.filter(work => work.category === category);
-
-        activeWorksList = filteredWorks; // Guardar obras filtradas completas para Lightbox
+        const filteredWorks = getOrderedWorks(category);
+        activeWorksList = filteredWorks; // Guardar obras ordenadas y filtradas completas para Lightbox
 
         const totalItems = filteredWorks.length;
         let startIndex = 0;
@@ -707,10 +726,17 @@ document.addEventListener("DOMContentLoaded", function () {
             const obraTitle = title || "esta obra";
             const subject = encodeURIComponent("Consulta por una obra similar");
             const body = encodeURIComponent(`Hola,\n\nVi la obra "${obraTitle}" en tu página y quería consultar por un trabajo similar.\n\nGracias.`);
-            modalWaBtn.href = `https://mail.google.com/mail/?view=cm&fs=1&to=alexis.q.2106@gmail.com&su=${subject}&body=${body}`;
+            modalWaBtn.href = `mailto:alexis.q.2106@gmail.com?subject=${subject}&body=${body}`;
+            modalWaBtn.removeAttribute("target");
+            modalWaBtn.removeAttribute("rel");
         }
 
         updateModalCounter();
+
+        // Recordar el elemento activo previo para restaurar el foco al cerrar
+        if (!artModal.classList.contains("active")) {
+            lastFocusedElement = document.activeElement;
+        }
 
         artModal.classList.add("active");
         artModal.setAttribute("aria-hidden", "false");
@@ -730,6 +756,8 @@ document.addEventListener("DOMContentLoaded", function () {
         if (modalCloseBtn) modalCloseBtn.focus();
     }
 
+    let lastFocusedElement = null;
+
     function closeModal() {
         if (!artModal) return;
         resetLightboxZoom(false);
@@ -737,14 +765,47 @@ document.addEventListener("DOMContentLoaded", function () {
         artModal.classList.remove("active");
         artModal.setAttribute("aria-hidden", "true");
         document.body.classList.remove("no-scroll");
+
+        // Restaurar el foco al elemento disparador
+        if (lastFocusedElement && typeof lastFocusedElement.focus === "function" && document.contains(lastFocusedElement)) {
+            lastFocusedElement.focus();
+        }
+        lastFocusedElement = null;
     }
 
     if (modalCloseBtn) modalCloseBtn.addEventListener("click", closeModal);
     if (modalBackdrop) modalBackdrop.addEventListener("click", closeModal);
 
+    // Obtener elementos interactivos focusables dentro del modal para el Focus Trap
+    function getModalFocusableElements() {
+        if (!artModal) return [];
+        const selector = 'button:not([disabled]), [href]:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])';
+        return Array.from(artModal.querySelectorAll(selector)).filter(el => {
+            return (el.offsetWidth > 0 || el.offsetHeight > 0 || el === document.activeElement) && window.getComputedStyle(el).visibility !== "hidden";
+        });
+    }
+
     document.addEventListener("keydown", (e) => {
         if (artModal && artModal.classList.contains("active")) {
-            if (e.key === "Escape") {
+            if (e.key === "Tab") {
+                const focusables = getModalFocusableElements();
+                if (focusables.length > 0) {
+                    const firstFocusable = focusables[0];
+                    const lastFocusable = focusables[focusables.length - 1];
+
+                    if (e.shiftKey) {
+                        if (document.activeElement === firstFocusable || !artModal.contains(document.activeElement)) {
+                            e.preventDefault();
+                            lastFocusable.focus();
+                        }
+                    } else {
+                        if (document.activeElement === lastFocusable || !artModal.contains(document.activeElement)) {
+                            e.preventDefault();
+                            firstFocusable.focus();
+                        }
+                    }
+                }
+            } else if (e.key === "Escape") {
                 closeModal();
             } else if (e.key === "ArrowRight") {
                 showNextArtwork();
@@ -878,17 +939,46 @@ document.addEventListener("DOMContentLoaded", function () {
     if (beforeAfterSlider && sliderAfterLayer && sliderHandle) {
         let isResizing = false;
 
+        function setSliderPercentage(percentage) {
+            if (percentage < 0) percentage = 0;
+            if (percentage > 100) percentage = 100;
+            const rounded = Math.round(percentage);
+            sliderAfterLayer.style.width = `${percentage}%`;
+            sliderHandle.style.left = `${percentage}%`;
+            sliderHandle.setAttribute("aria-valuenow", rounded.toString());
+        }
+
         function setSliderPosition(clientX) {
             const rect = beforeAfterSlider.getBoundingClientRect();
             const offsetX = clientX - rect.left;
-            let percentage = (offsetX / rect.width) * 100;
-
-            if (percentage < 0) percentage = 0;
-            if (percentage > 100) percentage = 100;
-
-            sliderAfterLayer.style.width = `${percentage}%`;
-            sliderHandle.style.left = `${percentage}%`;
+            const percentage = (offsetX / rect.width) * 100;
+            setSliderPercentage(percentage);
         }
+
+        sliderHandle.addEventListener("keydown", function (e) {
+            let currentVal = parseFloat(sliderHandle.getAttribute("aria-valuenow")) || 50;
+            const step = 5;
+            let handled = false;
+
+            if (e.key === "ArrowLeft" || e.key === "ArrowDown") {
+                setSliderPercentage(currentVal - step);
+                handled = true;
+            } else if (e.key === "ArrowRight" || e.key === "ArrowUp") {
+                setSliderPercentage(currentVal + step);
+                handled = true;
+            } else if (e.key === "Home") {
+                setSliderPercentage(0);
+                handled = true;
+            } else if (e.key === "End") {
+                setSliderPercentage(100);
+                handled = true;
+            }
+
+            if (handled) {
+                e.preventDefault();
+                e.stopPropagation();
+            }
+        });
 
         sliderHandle.addEventListener("mousedown", function (e) {
             e.preventDefault();
@@ -943,14 +1033,23 @@ document.addEventListener("DOMContentLoaded", function () {
         async function initDynamicBeforeAfter() {
             if (typeof WORKS_DATA === "undefined" || !Array.isArray(WORKS_DATA)) return;
 
-            // Escanear obras de WORKS_DATA y asociar con assets/images/referencias/[mismo-archivo]
+            // Escanear obras de WORKS_DATA y asociar con assets/images/referencias/
+            const validExtensions = [".jpg", ".jpeg", ".png", ".webp", ".JPG", ".JPEG", ".PNG", ".WEBP"];
+
             const candidates = WORKS_DATA.map((work) => {
                 const imgPath = work.image || "";
-                const filename = imgPath.substring(imgPath.lastIndexOf("/") + 1);
+                const filenameWithExt = imgPath.substring(imgPath.lastIndexOf("/") + 1);
+                const lastDotIdx = filenameWithExt.lastIndexOf(".");
+                const baseName = lastDotIdx !== -1 ? filenameWithExt.substring(0, lastDotIdx) : filenameWithExt;
+                const originalExt = lastDotIdx !== -1 ? filenameWithExt.substring(lastDotIdx) : "";
+
+                // Probar la misma extensión y extensiones de imagen estándar
+                const extensionsToTry = [originalExt, ...validExtensions.filter(ext => ext.toLowerCase() !== originalExt.toLowerCase())];
+
                 return {
                     work,
-                    filename,
-                    refSrc: `assets/images/referencias/${filename}`,
+                    baseName,
+                    extensionsToTry,
                     artworkSrc: imgPath
                 };
             });
@@ -958,16 +1057,19 @@ document.addEventListener("DOMContentLoaded", function () {
             // Comprobar la existencia de cada archivo de referencia
             const checkResults = await Promise.all(
                 candidates.map(async (c) => {
-                    if (!c.filename) return null;
-                    const exists = await checkImageExists(c.refSrc);
-                    if (exists) {
-                        return {
-                            title: c.work.title || "Retrato a Lápiz",
-                            refSrc: c.refSrc,
-                            artworkSrc: c.artworkSrc,
-                            altBefore: `Fotografía original de referencia - ${c.work.title || ""}`,
-                            altAfter: `Retrato finalizado a lápiz por Alexis - ${c.work.title || ""}`
-                        };
+                    if (!c.baseName) return null;
+                    for (const ext of c.extensionsToTry) {
+                        const refUrl = `assets/images/referencias/${c.baseName}${ext}`;
+                        const exists = await checkImageExists(refUrl);
+                        if (exists) {
+                            return {
+                                title: c.work.title || "Retrato a lápiz",
+                                refSrc: refUrl,
+                                artworkSrc: c.artworkSrc,
+                                altBefore: `Fotografía original de referencia - ${c.work.title || ""}`,
+                                altAfter: `Retrato finalizado a lápiz - ${c.work.title || ""}`
+                            };
+                        }
                     }
                     return null;
                 })
@@ -1000,8 +1102,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 }
 
                 // Restablecer el deslizador al centro (50%) al cambiar de comparación
-                sliderAfterLayer.style.width = "50%";
-                sliderHandle.style.left = "50%";
+                setSliderPercentage(50);
 
                 // Actualizar estado de dots
                 if (comparisonDots) {

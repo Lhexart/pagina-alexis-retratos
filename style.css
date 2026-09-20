@@ -1528,6 +1528,19 @@ section {
     color: var(--color-bg-base);
 }
 
+.comparison-handle:focus-visible {
+    outline: none;
+}
+
+.comparison-handle:focus-visible .handle-button {
+    outline: 2px solid var(--color-accent-gold);
+    outline-offset: 4px;
+    box-shadow: 0 0 16px var(--color-accent-gold-glow);
+    transform: scale(1.1);
+    background-color: var(--color-accent-gold);
+    color: var(--color-bg-base);
+}
+
 .tag-label {
     position: absolute;
     top: var(--space-xs);
