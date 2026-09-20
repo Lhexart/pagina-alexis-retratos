@@ -720,13 +720,11 @@ document.addEventListener("DOMContentLoaded", function () {
             }
         }
 
+        currentModalArtworkTitle = title || "esta obra";
         if (modalContactBtn) {
-            const obraTitle = title || "esta obra";
-            const subject = encodeURIComponent("Consulta por una obra similar");
-            const body = encodeURIComponent(`Hola,\n\nVi la obra "${obraTitle}" en tu página y quería consultar por un trabajo similar.\n\nGracias.`);
-            modalContactBtn.href = `mailto:alexis.q.2106@gmail.com?subject=${subject}&body=${body}`;
-            modalContactBtn.removeAttribute("target");
-            modalContactBtn.removeAttribute("rel");
+            const modalSubject = "Consulta por una obra similar";
+            const modalBody = `Hola,\n\nVi la obra "${currentModalArtworkTitle}" en tu página y quería consultar por un trabajo similar.\n\nGracias.`;
+            updateEmailElementFallback(modalContactBtn, modalSubject, modalBody);
         }
 
         updateModalCounter();
@@ -1151,7 +1149,89 @@ document.addEventListener("DOMContentLoaded", function () {
         initDynamicBeforeAfter();
     }
 
-    // Inicializar Microinteracciones & Galería
+    // ======================================================================
+    // 5. GESTIÓN INTELIGENTE DE CONTACTO POR EMAIL (GMAIL WEB EN PC / MAILTO EN MOBILE)
+    // ======================================================================
+    const CONTACT_EMAIL = "alexis.q.2106@gmail.com";
+    const GENERAL_EMAIL_SUBJECT = "Consulta por un retrato";
+    const GENERAL_EMAIL_BODY = "Hola,\n\nVi tu trabajo en la página y quería consultar por un retrato.\n\nLa idea que tengo es:\n\nGracias.";
+
+    let currentModalArtworkTitle = "";
+
+    function isMobileOrTablet() {
+        const ua = (navigator.userAgent || navigator.vendor || window.opera || "").toLowerCase();
+        const isMobileUa = /android|webos|iphone|ipad|ipod|blackberry|iemobile|opera mini|mobile|tablet/i.test(ua);
+        const isIPadOS = navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1;
+        const hasCoarsePointer = window.matchMedia && window.matchMedia("(pointer: coarse)").matches;
+        const isSmallScreen = window.matchMedia && window.matchMedia("(max-width: 1024px)").matches;
+        const hasTouch = (navigator.maxTouchPoints > 0) || ("ontouchstart" in window);
+
+        return isMobileUa || isIPadOS || (hasTouch && (hasCoarsePointer || isSmallScreen));
+    }
+
+    function openEmailContact(subject, body, event) {
+        if (event && event.preventDefault) {
+            event.preventDefault();
+        }
+
+        const encSubject = encodeURIComponent(subject);
+        const encBody = encodeURIComponent(body);
+
+        if (isMobileOrTablet()) {
+            const mailtoUrl = `mailto:${CONTACT_EMAIL}?subject=${encSubject}&body=${encBody}`;
+            window.location.href = mailtoUrl;
+        } else {
+            const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=${CONTACT_EMAIL}&su=${encSubject}&body=${encBody}`;
+            window.open(gmailUrl, "_blank", "noopener,noreferrer");
+        }
+    }
+
+    function updateEmailElementFallback(element, subject, body) {
+        if (!element) return;
+        const encSubject = encodeURIComponent(subject);
+        const encBody = encodeURIComponent(body);
+
+        if (isMobileOrTablet()) {
+            element.href = `mailto:${CONTACT_EMAIL}?subject=${encSubject}&body=${encBody}`;
+            element.removeAttribute("target");
+            element.removeAttribute("rel");
+        } else {
+            element.href = `https://mail.google.com/mail/?view=cm&fs=1&to=${CONTACT_EMAIL}&su=${encSubject}&body=${encBody}`;
+            element.setAttribute("target", "_blank");
+            element.setAttribute("rel", "noopener noreferrer");
+        }
+    }
+
+    function initEmailContactButtons() {
+        const mainContactBtn = document.getElementById("main-contact-btn");
+        const footerEmailBtn = document.getElementById("footer-email-btn");
+
+        if (mainContactBtn) {
+            updateEmailElementFallback(mainContactBtn, GENERAL_EMAIL_SUBJECT, GENERAL_EMAIL_BODY);
+            mainContactBtn.addEventListener("click", function (e) {
+                openEmailContact(GENERAL_EMAIL_SUBJECT, GENERAL_EMAIL_BODY, e);
+            });
+        }
+
+        if (footerEmailBtn) {
+            updateEmailElementFallback(footerEmailBtn, GENERAL_EMAIL_SUBJECT, GENERAL_EMAIL_BODY);
+            footerEmailBtn.addEventListener("click", function (e) {
+                openEmailContact(GENERAL_EMAIL_SUBJECT, GENERAL_EMAIL_BODY, e);
+            });
+        }
+
+        if (modalContactBtn) {
+            modalContactBtn.addEventListener("click", function (e) {
+                const obraTitle = currentModalArtworkTitle || "esta obra";
+                const modalSubject = "Consulta por una obra similar";
+                const modalBody = `Hola,\n\nVi la obra "${obraTitle}" en tu página y quería consultar por un trabajo similar.\n\nGracias.`;
+                openEmailContact(modalSubject, modalBody, e);
+            });
+        }
+    }
+
+    // Inicializar Microinteracciones, Contacto Inteligente & Galería
+    initEmailContactButtons();
     initScrollReveal();
     renderCategoryFilters();
     renderGallery("todas");
